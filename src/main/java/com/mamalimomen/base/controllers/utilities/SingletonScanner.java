@@ -16,6 +16,10 @@ public final class SingletonScanner {
         return sc.next() + sc.nextLine();
     }
 
+    public static void clearBuffer(){
+        sc.nextLine();
+    }
+
     public static synchronized String readParagraph() {
         String paragraph = "";
         String line = "";
