@@ -3,9 +3,10 @@ package com.mamalimomen.base.domains;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 
 @MappedSuperclass
-public abstract class BaseEntity<PK extends Number> {
+public abstract class BaseEntity<PK extends Number> implements Serializable {
 
     @Id
     @Column(name = "identity", updatable = false, nullable = false, unique = true)

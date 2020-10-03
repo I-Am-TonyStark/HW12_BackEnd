@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public interface BaseRepository<E extends BaseEntity> {
+public interface BaseRepository<E extends BaseEntity<PK>, PK extends Number> {
 
     void closeEntityManger();
 

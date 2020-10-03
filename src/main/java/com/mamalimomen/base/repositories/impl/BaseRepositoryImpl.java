@@ -12,7 +12,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class BaseRepositoryImpl<E extends BaseEntity> implements BaseRepository<E> {
+public class BaseRepositoryImpl<E extends BaseEntity<PK>, PK extends Number> implements BaseRepository<E, PK> {
     private final EntityManager em;
 
     public BaseRepositoryImpl(EntityManager em) {
