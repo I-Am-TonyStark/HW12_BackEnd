@@ -19,8 +19,8 @@ import java.util.Date;
                 name = "Account.findAllActive",
                 query = "SELECT a FROM Account a WHERE a.active = TRUE"),
         @NamedQuery(
-                name = "Account.findManyByCustomerID",
-                query = "SELECT a FROM Account a JOIN a.ownerCustomer w WHERE w.id = ?1")
+                name = "Account.findManyByCustomerNationalCode",
+                query = "SELECT a FROM Account a JOIN a.ownerCustomer w WHERE w.nationalCode = ?1")
 })
 public class Account extends BaseEntity<Long> implements Comparable<Account> {
 

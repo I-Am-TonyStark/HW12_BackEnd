@@ -25,7 +25,7 @@ public interface BaseService<E extends BaseEntity<PK>, PK extends Number> {
 
     <T> List<E> findManyByNamedQuery(String namedQuery, T parameter, Class<E> c);
 
-    <T> List<E> findManyByNamedQuery(String namedQuery, T parameter1, T parameter2, Class<E> c);
+    <T> List<E> findManyByNamedQuery(String namedQuery, T parameter1, T parameter2, T parameter3, Class<E> c);
 
     <T> List<E> findManyByNamedQuery(Predicate<E> p, String namedQuery, T parameter, Class<E> c);
 

@@ -7,17 +7,30 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CreditCardService extends BaseService<CreditCard, Long> {
-    Optional<CreditCard> findOneCreditCard(Long ownerID);
 
-    boolean setFirstPassword(Long cardID);
+    String createCreditCard();
 
-    boolean changeFirstPassword(Long cardID);
+    Optional<CreditCard> retrieveCreditCard();
 
-    boolean changeSecondPassword(Long cardID);
+    String updateCreditCard();
 
-    boolean setSecondPassword(Long cardID);
+    String deleteCreditCard();
 
-    List<CreditCard> findAllCreditCards();
+    List<CreditCard> findCreditCards();
 
-    boolean cardToCard();
+    Optional<CreditCard> findCreditCardByNumber();
+
+    String setFirstPassword();
+
+    String changeFirstPassword();
+
+    String setSecondPassword();
+
+    String changeSecondPassword();
+
+    String cardToCardTransaction();
+
+    String checkAccountBalanceTransaction();
+
+    boolean transactionPermission();
 }

@@ -1,10 +1,27 @@
 package com.mamalimomen.services;
 
-import java.util.List;
+import com.mamalimomen.base.services.BaseService;
+import com.mamalimomen.domains.Employee;
+
 import java.util.Optional;
 
-public interface EmployeeService extends UserService{
-    Optional<Tag> findOneTag(String title);
+public interface EmployeeService extends BaseService<Employee, Long> {
 
-    List<Tag> findAllTags();
+    String createEmployee();
+
+    Optional<Employee> retrieveEmployee();
+
+    String updateEmployee();
+
+    String deleteEmployee();
+
+    void showEmployees();
+
+    void showEmployeesByPostTitle();
+
+    void showEmployeesByBossNationalCode();
+
+    void showEmployeesByBranchName();
+
+    void showEmployeeByNationalCode();
 }

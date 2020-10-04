@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
         uniqueConstraints = {@UniqueConstraint(name = "unique_branch_manager", columnNames = {"branchName", "manager"})})
 @NamedQueries({
         @NamedQuery(
-                name = "BankBranch.finaAll",
+                name = "BankBranch.findAll",
                 query = "SELECT bb FROM BankBranch bb"),
         @NamedQuery(
                 name = "BankBranch.findOneByName",

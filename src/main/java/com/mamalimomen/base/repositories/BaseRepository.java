@@ -4,8 +4,6 @@ import com.mamalimomen.base.domains.BaseEntity;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 public interface BaseRepository<E extends BaseEntity<PK>, PK extends Number> {
 
@@ -25,17 +23,9 @@ public interface BaseRepository<E extends BaseEntity<PK>, PK extends Number> {
 
     <T> List<E> findManyByNamedQuery(String namedQuery, T parameter, Class<E> c);
 
-    <T> List<E> findManyByNamedQuery(String namedQuery, T parameter1, T parameter2, Class<E> c);
-
-    <T> List<E> findManyByNamedQuery(Predicate<E> p, String namedQuery, T parameter, Class<E> c);
-
-    <R, T> List<R> findManyByNamedQuery(Function<E, R> f, String namedQuery, T parameter, Class<E> c);
+    <T> List<E> findManyByNamedQuery(String namedQuery, T parameter1, T parameter2, T parameter3, Class<E> c);
 
     List<E> findAllByNamedQuery(String namedQuery, Class<E> c);
-
-    List<E> findAllByNamedQuery(Predicate<E> p, String namedQuery, Class<E> c);
-
-    <R> List<R> findAllByNamedQuery(Function<E, R> f, String namedQuery, Class<E> c);
 
     boolean deleteOne(Class<E> c, PK id);
 

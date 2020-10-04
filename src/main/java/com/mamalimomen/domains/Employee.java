@@ -12,13 +12,13 @@ import javax.persistence.*;
                 name = "Employee.findAll",
                 query = "SELECT e FROM Employee e"),
         @NamedQuery(
-                name = "Employee.findAllByPostTitle",
+                name = "Employee.findManyByPostTitle",
                 query = "SELECT e FROM Employee e JOIN e.post p where p.title = ?1"),
         @NamedQuery(
-                name = "Employee.findAllByBossNationalCode",
+                name = "Employee.findManyByBossNationalCode",
                 query = "SELECT e FROM Employee e JOIN e.boss b where b.nationalCode = ?1"),
         @NamedQuery(
-                name = "Employee.findAllByBranchName",
+                name = "Employee.findManyByBranchName",
                 query = "SELECT e FROM Employee e JOIN e.workOffice o where o.branchName = ?1"),
         @NamedQuery(
                 name = "Employee.findOneByNationalCode",

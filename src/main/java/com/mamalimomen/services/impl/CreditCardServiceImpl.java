@@ -12,53 +12,68 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+//FIXME
 public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, CreditCardRepository> implements CreditCardService {
 
     private static final BigDecimal cardToCardTransactionCost = BigDecimal.valueOf(5_000.00);
-    private static final BigDecimal seeBalanceTransactionCost = BigDecimal.valueOf(1_000.00);
+    private static final BigDecimal checkAccountBalanceTransactionCost = BigDecimal.valueOf(1_000.00);
 
     public CreditCardServiceImpl(EntityManager em) {
         super(new CreditCardRepositoryImpl(em));
     }
 
-
     @Override
-    public Optional<CreditCard> findOneCreditCard(Long ownerID) {
-        return Optional.empty();
-    }
-
-    @Override
-    public boolean setFirstPassword(Long cardID) {
-        return false;
-    }
-
-    @Override
-    public boolean changeFirstPassword(Long cardID) {
-        return false;
-    }
-
-    @Override
-    public boolean changeSecondPassword(Long cardID) {
-        return false;
-    }
-
-    @Override
-    public boolean setSecondPassword(Long cardID) {
-        return false;
-    }
-
-    @Override
-    public List<CreditCard> findAllCreditCards() {
+    public String createCreditCard() {
         return null;
     }
 
     @Override
-    public boolean transactionPermission() { //check at first every transaction
-        //TODO validation account activity
+    public Optional<CreditCard> retrieveCreditCard() {
+        return Optional.empty();
     }
 
     @Override
-    public boolean cardToCard() {
+    public String updateCreditCard() {
+        return null;
+    }
+
+    @Override
+    public String deleteCreditCard() {
+        return null;
+    }
+
+    @Override
+    public List<CreditCard> findCreditCards() {
+        return null;
+    }
+
+    @Override
+    public Optional<CreditCard> findCreditCardByNumber() {
+        return Optional.empty();
+    }
+
+    @Override
+    public String setFirstPassword() {
+        return null;
+    }
+
+    @Override
+    public String changeFirstPassword() {
+        return null;
+    }
+
+    @Override
+    public String setSecondPassword() {
+        return null;
+    }
+
+    @Override
+    public String changeSecondPassword() {
+        return null;
+    }
+
+    @Override
+    public String cardToCardTransaction() {
         while (true) {
 
             if (transactionPermission()) {
@@ -72,7 +87,7 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
                 System.out.printf("Enter transition money amount: ");
                 String transitionMoneyAmount = SingletonScanner.readLine();
 
-                //TODO validations
+                //TODO validations 16 digit and exist
 
                 while (true) {
                     System.out.printf("Enter origin card second password: "); //after three wrong -> account blocking -> employee must unBlocking it
@@ -85,10 +100,21 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
                     String originExpireDate = SingletonScanner.readLine();
 
                     //TODO validation and enough balance
-                    //TODO do transaction with mines cost 500.00 t
+                    //TODO do transaction with mines cost 500.00 tomans
 
                 }
             }
         }
+    }
+
+    @Override
+    public String checkAccountBalanceTransaction() {
+        return null;
+    }
+
+    @Override
+    public boolean transactionPermission() { //check at first every transaction
+        //TODO validation account activity (not blocking)
+        return false;
     }
 }

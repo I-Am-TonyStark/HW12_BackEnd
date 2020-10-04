@@ -1,8 +1,27 @@
 package com.mamalimomen.services;
 
-import java.util.Date;
+import com.mamalimomen.base.services.BaseService;
+import com.mamalimomen.domains.Transaction;
 
-public interface TransactionService {
+import java.util.Optional;
 
-    void seeAllAccountTransactions(Date from,Long accountID);
+public interface TransactionService extends BaseService<Transaction, Long> {
+
+    String createTransaction();
+
+    Optional<Transaction> retrieveTransaction();
+
+    String updateTransaction();
+
+    String deleteTransaction();
+
+    void showTransactions();
+
+    void showSucceedTransactions();
+
+    void showTransactionsByAccountNumberAndDate();
+
+    void showTransactionsByAccountNumberTillNow();
+
+    void showTransactionsByAccountNumber();
 }

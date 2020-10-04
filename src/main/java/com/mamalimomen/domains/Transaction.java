@@ -18,10 +18,10 @@ import java.util.Date;
                 name = "Transaction.findAllSucceed",
                 query = "SELECT t FROM Transaction t WHERE t.succeed = TRUE"),
         @NamedQuery(
-                name = "Transaction.findManyByDate",
-                query = "SELECT t FROM Transaction t WHERE t.date BETWEEN ?1 AND ?2"),
+                name = "Transaction.findManyByAccountNumberAndDate",
+                query = "SELECT t FROM Transaction t JOIN t.account a WHERE a.accountNumber = ?1 AND (t.date BETWEEN ?2 AND ?3)"),
         @NamedQuery(
-                name = "Transaction.findAllByAccountNumber",
+                name = "Transaction.findManyByAccountNumber",
                 query = "SELECT t FROM Transaction t JOIN t.account a WHERE a.accountNumber = ?1")
 })
 public class Transaction extends BaseEntity<Long> implements Comparable<Transaction> {

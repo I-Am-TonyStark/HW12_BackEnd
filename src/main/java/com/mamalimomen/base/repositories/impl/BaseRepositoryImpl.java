@@ -8,9 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class BaseRepositoryImpl<E extends BaseEntity<PK>, PK extends Number> implements BaseRepository<E, PK> {
     private final EntityManager em;
@@ -121,7 +118,7 @@ public class BaseRepositoryImpl<E extends BaseEntity<PK>, PK extends Number> imp
     }
 
     @Override
-    public <T> List<E> findManyByNamedQuery(String namedQuery, T parameter1, T parameter2, Class<E> c) {
+    public <T> List<E> findManyByNamedQuery(String namedQuery, T parameter1, T parameter2, T parameter3, Class<E> c) {
         return em.createNamedQuery(namedQuery, c)
                 .setParameter(1, parameter1)
                 .setParameter(2, parameter2)
@@ -129,41 +126,9 @@ public class BaseRepositoryImpl<E extends BaseEntity<PK>, PK extends Number> imp
     }
 
     @Override
-    public <T> List<E> findManyByNamedQuery(Predicate<E> p, String namedQuery, T parameter, Class<E> c) {
-        return findManyByNamedQuery(namedQuery, parameter, c)
-                .stream()
-                .filter(p)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public <R, T> List<R> findManyByNamedQuery(Function<E, R> f, String namedQuery, T parameter, Class<E> c) {
-        return findManyByNamedQuery(namedQuery, parameter, c)
-                .stream()
-                .map(f)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public List<E> findAllByNamedQuery(String namedQuery, Class<E> c) {
         return em.createNamedQuery(namedQuery, c)
                 .getResultList();
-    }
-
-    @Override
-    public List<E> findAllByNamedQuery(Predicate<E> p, String namedQuery, Class<E> c) {
-        return findAllByNamedQuery(namedQuery, c)
-                .stream()
-                .filter(p)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public <R> List<R> findAllByNamedQuery(Function<E, R> f, String namedQuery, Class<E> c) {
-        return findAllByNamedQuery(namedQuery, c)
-                .stream()
-                .map(f)
-                .collect(Collectors.toList());
     }
 
     @Override

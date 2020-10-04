@@ -1,10 +1,21 @@
 package com.mamalimomen.services;
 
-import java.util.List;
+import com.mamalimomen.base.services.BaseService;
+import com.mamalimomen.domains.Customer;
+
 import java.util.Optional;
 
-public interface CustomerService extends UserService{
-    List<Role> findAllRoles();
+public interface CustomerService extends BaseService<Customer, Long> {
 
-    Optional<Role> findOneRole(String title);
+    String createCustomer();
+
+    Optional<Customer> retrieveCustomer();
+
+    String updateCustomer();
+
+    String deleteCustomer();
+
+    void showCustomers();
+
+    void showCustomerByNationalCode();
 }

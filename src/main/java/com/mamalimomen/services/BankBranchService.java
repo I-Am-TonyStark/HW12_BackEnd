@@ -1,13 +1,21 @@
 package com.mamalimomen.services;
 
 import com.mamalimomen.base.services.BaseService;
+import com.mamalimomen.domains.Account;
 import com.mamalimomen.domains.BankBranch;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface BankBranchService extends BaseService<BankBranch, Long> {
-    Optional<Category> findOneCategory(String title);
+    String createAccount();
 
-    List<Category> findAllCategories();
+    Optional<Account> retrieveAccount();
+
+    String updateAccount();
+
+    String deleteAccount();
+
+    void showBankBranches();
+
+    void showBankBranchByName();
 }

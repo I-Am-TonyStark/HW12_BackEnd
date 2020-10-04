@@ -14,7 +14,7 @@ import javax.persistence.*;
                 name = "Post.findAll",
                 query = "SELECT p FROM Post p"),
         @NamedQuery(
-                name = "Account.findOneByTitle",
+                name = "Post.findOneByTitle",
                 query = "SELECT p FROM Post p WHERE p.title = ?1")
 })
 public class Post extends BaseEntity<Long> implements Comparable<Post> {
