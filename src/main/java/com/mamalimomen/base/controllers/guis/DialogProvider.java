@@ -1,9 +1,9 @@
-package com.mamalimomen.base.controllers.gui;
+package com.mamalimomen.base.controllers.guis;
 
 import javax.swing.*;
 
-public final class AlertProvider {
-    private AlertProvider() {
+public final class DialogProvider {
+    private DialogProvider() {
     }
 
     public static synchronized <T> void createAndShowErrorDialog(T message, String title) {
@@ -18,7 +18,7 @@ public final class AlertProvider {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
     }
 
-    public static synchronized String createAndShowInputDialog(String message, String title) {
+    public static synchronized <T> String createAndShowInputDialog(T message, String title) {
         return JOptionPane.showInputDialog(null, message, title, JOptionPane.QUESTION_MESSAGE);
     }
 }

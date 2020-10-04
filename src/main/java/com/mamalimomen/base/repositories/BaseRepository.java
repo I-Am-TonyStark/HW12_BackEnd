@@ -19,11 +19,13 @@ public interface BaseRepository<E extends BaseEntity<PK>, PK extends Number> {
 
     boolean updateMany(List<E> list);
 
-    Optional<E> findOne(E entity);
+    Optional<E> findOne(Class<E> c, PK id);
 
     <T> Optional<E> findOneByNamedQuery(String namedQuery, T parameter, Class<E> c);
 
     <T> List<E> findManyByNamedQuery(String namedQuery, T parameter, Class<E> c);
+
+    <T> List<E> findManyByNamedQuery(Predicate<E> p, String namedQuery, T parameter, Class<E> c);
 
     <R, T> List<R> findManyByNamedQuery(Function<E, R> f, String namedQuery, T parameter, Class<E> c);
 
@@ -33,7 +35,7 @@ public interface BaseRepository<E extends BaseEntity<PK>, PK extends Number> {
 
     <R> List<R> findAllByNamedQuery(Function<E, R> f, String namedQuery, Class<E> c);
 
-    boolean deleteOne(E entity);
+    boolean deleteOne(Class<E> c, PK id);
 
-    boolean deleteMany(List<E> list);
+    boolean deleteMany(List<E> list, Class<E> c);
 }

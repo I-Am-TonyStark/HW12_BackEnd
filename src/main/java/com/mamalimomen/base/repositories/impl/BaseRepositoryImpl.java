@@ -43,7 +43,18 @@ public class BaseRepositoryImpl<E extends BaseEntity<PK>, PK extends Number> imp
 
     @Override
     public boolean saveMany(List<E> list) {
-        //FIXME
+        try {
+            em.getTransaction().begin();
+
+            for (E entity : list)
+                em.persist(entity);
+
+            em.getTransaction().commit();
+
+            return true;
+        } catch (EntityExistsException exception) {
+            em.getTransaction().rollback();
+        }
         return false;
     }
 
@@ -66,13 +77,25 @@ public class BaseRepositoryImpl<E extends BaseEntity<PK>, PK extends Number> imp
 
     @Override
     public boolean updateMany(List<E> list) {
-        //FIXME
+        try {
+            em.getTransaction().begin();
+
+            for (E entity : list)
+                if (!em.contains(entity))
+                    em.merge(entity);
+
+            em.getTransaction().commit();
+
+            return true;
+        } catch (IllegalArgumentException exception) {
+            em.getTransaction().rollback();
+        }
         return false;
     }
 
     @Override
-    public Optional<E> findOne(E entity) {
-        E found = (E) em.find(entity.getClass(), entity.getId());
+    public Optional<E> findOne(Class<E> c, PK id) {
+        E found = em.find(c, id);
         return found != null ? Optional.of(found) : Optional.empty();
     }
 
@@ -95,6 +118,14 @@ public class BaseRepositoryImpl<E extends BaseEntity<PK>, PK extends Number> imp
         return em.createNamedQuery(namedQuery, c)
                 .setParameter(1, parameter)
                 .getResultList();
+    }
+
+    @Override
+    public <T> List<E> findManyByNamedQuery(Predicate<E> p, String namedQuery, T parameter, Class<E> c) {
+        return findManyByNamedQuery(namedQuery, parameter, c)
+                .stream()
+                .filter(p)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -128,9 +159,9 @@ public class BaseRepositoryImpl<E extends BaseEntity<PK>, PK extends Number> imp
     }
 
     @Override
-    public boolean deleteOne(E entity) {
+    public boolean deleteOne(Class<E> c, PK id) {
         try {
-            Optional<E> oEntity = findOne(entity);
+            Optional<E> oEntity = findOne(c, id);
             if (oEntity.isPresent()) {
                 em.getTransaction().begin();
 
@@ -139,7 +170,7 @@ public class BaseRepositoryImpl<E extends BaseEntity<PK>, PK extends Number> imp
                 em.getTransaction().commit();
 
                 return true;
-            } else return false;
+            }
         } catch (IllegalArgumentException exception) {
             em.getTransaction().rollback();
         }
@@ -147,8 +178,18 @@ public class BaseRepositoryImpl<E extends BaseEntity<PK>, PK extends Number> imp
     }
 
     @Override
-    public boolean deleteMany(List<E> list) {
-        //FIXME
+    public boolean deleteMany(List<E> list, Class<E> c) {
+        try {
+            em.getTransaction().begin();
+            for (E entity : list) {
+                Optional<E> oEntity = findOne(c, entity.getId());
+                oEntity.ifPresent(em::remove);
+            }
+            em.getTransaction().commit();
+            return true;
+        } catch (IllegalArgumentException exception) {
+            em.getTransaction().rollback();
+        }
         return false;
     }
 }

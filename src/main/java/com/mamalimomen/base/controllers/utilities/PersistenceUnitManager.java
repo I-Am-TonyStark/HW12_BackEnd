@@ -21,7 +21,7 @@ public final class PersistenceUnitManager {
         } else return emf.createEntityManager();
     }
 
-    public static synchronized void closeAllPersistenceResources() {
+    public static synchronized void closeAllPersistenceProviders() {
         for (EntityManagerFactory emf : mapper.values()) {
             emf.close();
         }

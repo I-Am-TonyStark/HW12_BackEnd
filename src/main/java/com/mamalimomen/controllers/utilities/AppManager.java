@@ -34,6 +34,6 @@ public final class AppManager {
         for (EntityManager em : emList) {
             em.close();
         }
-        PersistenceUnitManager.closeAllPersistenceResources();
+        PersistenceUnitManager.closeAllPersistenceProviders();
     }
 }
