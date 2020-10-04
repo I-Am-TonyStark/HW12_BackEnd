@@ -2,15 +2,18 @@ package com.mamalimomen.domains;
 
 import com.mamalimomen.base.controllers.utilities.InValidDataException;
 import com.mamalimomen.base.domains.BaseEntity;
+import org.hibernate.annotations.SelectBeforeUpdate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "tbl_bank_branch", catalog = "HW12_One", schema = "HW12_One",
+@SelectBeforeUpdate
+@Table(name = "tbl_branch", catalog = "HW12_One", schema = "HW12_One",
         uniqueConstraints = {@UniqueConstraint(name = "unique_branch_manager", columnNames = {"branchName", "manager"})})
 @NamedQueries({
         @NamedQuery(
@@ -32,15 +35,15 @@ public class BankBranch extends BaseEntity<Long> implements Comparable<BankBranc
     private String branchName;
 
     @Temporal(TemporalType.DATE)
-    @Column(updatable = false, nullable = false)
-    private Date crateDate;
+    @Column(name = "create_date",updatable = false, nullable = false)
+    private Date createDate;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "fk_bank_branch", foreignKey = @ForeignKey(name = "FK_BOOK_REVIEW"))
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "fk_branch", foreignKey = @ForeignKey(name = "FK_BANK_BRANCH"))
     private Set<Account> accounts = new HashSet<>();
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_manager_id",nullable = false,unique = true)
+    @OneToOne(optional = false, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "fk_manager", nullable = false, unique = true)
     private Employee manager;
 
     public BankBranch() {
@@ -48,31 +51,17 @@ public class BankBranch extends BaseEntity<Long> implements Comparable<BankBranc
         count++;
     }
 
-    public String getAccounts() {
-        return accounts.stream().map().collect(Collectors.joining(" & "));
-    }
-
-    @Override
-    public int compareTo(BankBranch bb) {
-        return this.getCrateDate().compareTo(bb.getCrateDate());
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%d.%nBalance: %s%n", getId(), getBalance());
+    public String getAccountsString() {
+        return getAccounts().stream().map(Account::toString).collect(Collectors.joining("\n"));
     }
 
     public void printCompleteInformation() {
-        System.out.printf("%n%d.%nIs Active : %b%nBalance : %s%nOwner : %s%nOpen Date : %s%nCredit Card : %s%n%n",
-                getId(), getActive(), getBalance(), getOwnerCustomer(), getOpenDate(), getActiveCard());
+        System.out.printf("%nBranch name: %s%nManager fullName: %s%nCreate date: %s%nAccounts number: %d%nSum of balances: %d Rials%n%n",
+                getBranchName(), getManager().getFullName(), getCreateDate(), getAccounts().size(), getSumBalance());
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Account account = (Account) obj;
-        return this.hashCode() == account.hashCode();
+    public Double getSumBalance() {
+        return getAccounts().stream().map(Account::getBalance).mapToDouble(BigDecimal::doubleValue).sum();
     }
 
     public String getBranchName() {
@@ -80,18 +69,26 @@ public class BankBranch extends BaseEntity<Long> implements Comparable<BankBranc
     }
 
     public void setBranchName(String branchName) throws InValidDataException {
-        if (!branchName.matches("[a-zA-Z\\s.,&\\d\\(\\)]{5,}")) {
+        if (!branchName.matches("(\\w\\d*)+\\'?(\\w\\s*){2,}")) {
             throw new InValidDataException("Bank Branch Name");
         }
         this.branchName = branchName;
     }
 
-    public Date getCrateDate() {
-        return crateDate;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setCrateDate(Date crateDate) {
-        this.crateDate = crateDate;
+    public void setCreateDate(Date crateDate) {
+        this.createDate = crateDate;
+    }
+
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void addAccount(Account account) {
+        getAccounts().add(account);
     }
 
     public void setAccounts(Set<Account> accounts) {
@@ -104,5 +101,23 @@ public class BankBranch extends BaseEntity<Long> implements Comparable<BankBranc
 
     public void setManager(Employee manager) {
         this.manager = manager;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        BankBranch bb = (BankBranch) obj;
+        return this.hashCode() == bb.hashCode();
+    }
+
+    @Override
+    public int compareTo(BankBranch bb) {
+        return this.getSumBalance().compareTo(bb.getSumBalance());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Branch name: %s%nManager fullName: %s%n", getBranchName(), getManager().getFullName());
     }
 }

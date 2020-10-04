@@ -121,6 +121,14 @@ public class BaseRepositoryImpl<E extends BaseEntity<PK>, PK extends Number> imp
     }
 
     @Override
+    public <T> List<E> findManyByNamedQuery(String namedQuery, T parameter1, T parameter2, Class<E> c) {
+        return em.createNamedQuery(namedQuery, c)
+                .setParameter(1, parameter1)
+                .setParameter(2, parameter2)
+                .getResultList();
+    }
+
+    @Override
     public <T> List<E> findManyByNamedQuery(Predicate<E> p, String namedQuery, T parameter, Class<E> c) {
         return findManyByNamedQuery(namedQuery, parameter, c)
                 .stream()

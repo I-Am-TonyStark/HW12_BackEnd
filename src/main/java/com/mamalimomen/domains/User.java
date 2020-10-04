@@ -1,9 +1,12 @@
 package com.mamalimomen.domains;
 
+import com.mamalimomen.base.controllers.utilities.InValidDataException;
 import com.mamalimomen.base.domains.BaseEntity;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 @MappedSuperclass
 public class User extends BaseEntity<Long> implements Comparable<User> {
@@ -11,13 +14,10 @@ public class User extends BaseEntity<Long> implements Comparable<User> {
     @Transient
     private static final long serialVersionUID = -3789293023680252260L;
 
-    @Transient
-    private static long count = 4;
-
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private String lastName;
 
     @Column(nullable = false, unique = true, updatable = false)
@@ -26,24 +26,11 @@ public class User extends BaseEntity<Long> implements Comparable<User> {
     @Column(nullable = false, unique = true, updatable = false)
     private String nationalCode;
 
-    @Temporal(TemporalType.DATE)
-    @Column(updatable = false)
-    private Date birthDay;
-
     @Column(nullable = false)
     private String password;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "role_id")
-    private Role role;
-
     @Embedded
     private Address address;
-
-    public User() {
-        this.setId(count);
-        count++;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -67,12 +54,16 @@ public class User extends BaseEntity<Long> implements Comparable<User> {
         this.lastName = lastName;
     }
 
+    public String getFullName() {
+        return getFirstName() + " " + getLastName();
+    }
+
     public String getUserName() {
         return userName;
     }
 
     public void setUserName(String userName) throws InValidDataException {
-        if (!userName.matches("(\\w\\d*){3,}")) {
+        if (!userName.matches("(\\w\\d*){5,}")) {
             throw new InValidDataException("Username");
         }
         this.userName = userName;
@@ -84,7 +75,7 @@ public class User extends BaseEntity<Long> implements Comparable<User> {
 
     public void setNationalCode(String nationalCode) throws InValidDataException {
         if (!nationalCode.matches("\\d{10}")) {
-            throw new InValidDataException("National Code");
+            throw new InValidDataException("National code");
         }
         this.nationalCode = nationalCode;
     }
@@ -95,22 +86,6 @@ public class User extends BaseEntity<Long> implements Comparable<User> {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public Date getBirthDay() {
-        return birthDay;
-    }
-
-    public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
-    }
-
-    public void setStringBirthDay(String birthDay) throws InValidDataException {
-        if (!birthDay.matches("[01][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])")) {
-            throw new InValidDataException("Birthday");
-        }
-        String[] tempArray = birthDay.split("-");
-        setBirthDay(new Date(Integer.parseInt(tempArray[0]) - 1900, Integer.parseInt(tempArray[1]), Integer.parseInt(tempArray[2])));
     }
 
     public String getPassword() {
@@ -124,14 +99,6 @@ public class User extends BaseEntity<Long> implements Comparable<User> {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -142,11 +109,11 @@ public class User extends BaseEntity<Long> implements Comparable<User> {
 
     @Override
     public String toString() {
-        return String.format("%s: %s", getUserName(), getRole());
+        return String.format("FullName: %s%nAddress: %s%n", getFullName(), getAddress());
     }
 
     @Override
     public int compareTo(User u) {
-        return this.getUserName().compareTo(u.getUserName());
+        return this.getLastName().compareTo(u.getLastName());
     }
 }

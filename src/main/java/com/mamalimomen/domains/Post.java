@@ -2,19 +2,25 @@ package com.mamalimomen.domains;
 
 import com.mamalimomen.base.controllers.utilities.InValidDataException;
 import com.mamalimomen.base.domains.BaseEntity;
+import org.hibernate.annotations.SelectBeforeUpdate;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "tbl_post")
+@SelectBeforeUpdate
+@Table(name = "tbl_post", catalog = "HW12_One", schema = "HW12_One")
 @NamedQueries({
-        @NamedQuery(name = "Role.findAll", query = "select r from Role r"),
-        @NamedQuery(name = "Role.findOneByTitle", query = "select r from Role r where r.title =?1")
+        @NamedQuery(
+                name = "Post.findAll",
+                query = "SELECT p FROM Post p"),
+        @NamedQuery(
+                name = "Account.findOneByTitle",
+                query = "SELECT p FROM Post p WHERE p.title = ?1")
 })
 public class Post extends BaseEntity<Long> implements Comparable<Post> {
 
     @Transient
-    private static final long serialVersionUID = -974627443731173113L;
+    private static final long serialVersionUID = 4938129232368394591L;
 
     @Transient
     private static long count = 0;
@@ -32,23 +38,23 @@ public class Post extends BaseEntity<Long> implements Comparable<Post> {
     }
 
     public void setTitle(String title) throws InValidDataException {
-        if (!title.matches("[a-zA-Z\\s.,&\\d\\(\\)]{3,}")) {
-            throw new InValidDataException("Title");
+        if (!title.matches("\\w{3,}")) {
+            throw new InValidDataException("Post title");
         }
         this.title = title;
     }
 
     @Override
     public String toString() {
-        return String.format("%s", getTitle());
+        return String.format("%s%n", getTitle());
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Post post = (Post) obj;
-        return this.hashCode() == post.hashCode();
+        Post p = (Post) obj;
+        return this.hashCode() == p.hashCode();
     }
 
     @Override

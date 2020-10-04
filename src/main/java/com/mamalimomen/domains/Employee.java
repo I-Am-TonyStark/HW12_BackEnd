@@ -1,44 +1,78 @@
 package com.mamalimomen.domains;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import org.hibernate.annotations.SelectBeforeUpdate;
+
+import javax.persistence.*;
 
 @Entity
-public class Employee extends User{
+@SelectBeforeUpdate
+@Table(name = "tbl_employee", catalog = "HW12_One", schema = "HW12_One")
+@NamedQueries({
+        @NamedQuery(
+                name = "Employee.findAll",
+                query = "SELECT e FROM Employee e"),
+        @NamedQuery(
+                name = "Employee.findAllByPostTitle",
+                query = "SELECT e FROM Employee e JOIN e.post p where p.title = ?1"),
+        @NamedQuery(
+                name = "Employee.findAllByBossNationalCode",
+                query = "SELECT e FROM Employee e JOIN e.boss b where b.nationalCode = ?1"),
+        @NamedQuery(
+                name = "Employee.findAllByBranchName",
+                query = "SELECT e FROM Employee e JOIN e.workOffice o where o.branchName = ?1"),
+        @NamedQuery(
+                name = "Employee.findOneByNationalCode",
+                query = "SELECT e FROM Employee e WHERE e.nationalCode = ?1")
+})
+public class Employee extends User {
+
+    @Transient
+    private static final long serialVersionUID = -7597451830919628484L;
+
+    @Transient
+    private static long count = 0;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "fk_office",nullable = false)
+    @JoinColumn(name = "fk_branch", nullable = false)
     private BankBranch workOffice;
 
     @ManyToOne
     @JoinColumn(name = "fk_boss")
     private Employee boss;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "fk_post",nullable = false)
-    private Post post; //employee, boss, manager
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_post", nullable = false)
+    private Post post;
 
-    /*@Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Review other = (Review) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
+    public BankBranch getWorkOffice() {
+        return workOffice;
+    }
+
+    public void setWorkOffice(BankBranch workOffice) {
+        this.workOffice = workOffice;
+    }
+
+    public Employee getBoss() {
+        return boss;
+    }
+
+    public void setBoss(Employee boss) {
+        this.boss = boss;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 
     @Override
-    public int hashCode() {
-        return 31;
-    }*/
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Employee e = (Employee) obj;
+        return this.hashCode() == e.hashCode();
+    }
 }

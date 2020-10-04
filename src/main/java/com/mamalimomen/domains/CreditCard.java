@@ -2,14 +2,29 @@ package com.mamalimomen.domains;
 
 import com.mamalimomen.base.controllers.utilities.InValidDataException;
 import com.mamalimomen.base.domains.BaseEntity;
+import org.hibernate.annotations.SelectBeforeUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import java.io.Serializable;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class CreditCard extends BaseEntity<Long> implements Serializable {
+@SelectBeforeUpdate
+@Table(name = "tbl_card", catalog = "HW12_One", schema = "HW12_One")
+@NamedQueries({
+        @NamedQuery(
+                name = "CreditCard.findAll",
+                query = "SELECT cc FROM CreditCard cc"),
+        @NamedQuery(
+                name = "CreditCard.findOneByNumber",
+                query = "SELECT cc FROM CreditCard cc WHERE cc.cardNumber = ?1")
+})
+public class CreditCard extends BaseEntity<Long> implements Comparable<CreditCard> {
+
+    @Transient
+    private static final long serialVersionUID = -1888484344606840488L;
+
+    @Transient
+    private static long count = 0;
 
     @Column(name = "first_password", nullable = false)
     private String firstPassword;
@@ -20,11 +35,17 @@ public class CreditCard extends BaseEntity<Long> implements Serializable {
     @Column(name = "cvv2", nullable = false, updatable = false, unique = true)
     private String cvv2;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "expire_date", nullable = false, updatable = false)
     private Date expireDate;
 
     @Column(name = "card_number", nullable = false, updatable = false, unique = true)
     private String cardNumber;
+
+    public CreditCard() {
+        this.setId(count);
+        count++;
+    }
 
     public String getFirstPassword() {
         return firstPassword;
@@ -32,7 +53,7 @@ public class CreditCard extends BaseEntity<Long> implements Serializable {
 
     public void setFirstPassword(String firstPassword) throws InValidDataException {
         if (!firstPassword.matches("\\d{4}")) {
-            throw new InValidDataException("Country");
+            throw new InValidDataException("First password");
         }
         this.firstPassword = firstPassword;
     }
@@ -41,7 +62,10 @@ public class CreditCard extends BaseEntity<Long> implements Serializable {
         return secondPassword;
     }
 
-    public void setSecondPassword(String secondPassword) {
+    public void setSecondPassword(String secondPassword) throws InValidDataException {
+        if (!secondPassword.matches("\\d{4,}")) {
+            throw new InValidDataException("Second password");
+        }
         this.secondPassword = secondPassword;
     }
 
@@ -49,8 +73,19 @@ public class CreditCard extends BaseEntity<Long> implements Serializable {
         return cvv2;
     }
 
-    public void setCvv2(String cvv2) {
+    public void setCvv2(String cvv2) throws InValidDataException {
+        if (!firstPassword.matches("\\d{4}")) {
+            throw new InValidDataException("CVV2");
+        }
         this.cvv2 = cvv2;
+    }
+
+    public void setStringExpireDate(String expireDate) throws InValidDataException {
+        if (!expireDate.matches("[2][0][2-9][0-9]/(0[1-9]|1[0-2])")) {
+            throw new InValidDataException("Expire date");
+        }
+        String[] tempArray = expireDate.split("/");
+        setExpireDate(new Date(Integer.parseInt(tempArray[0]) - 1900, Integer.parseInt(tempArray[1]), 0));
     }
 
     public Date getExpireDate() {
@@ -66,9 +101,32 @@ public class CreditCard extends BaseEntity<Long> implements Serializable {
     }
 
     public void setCardNumber(String cardNumber) throws InValidDataException {
-        if (!firstPassword.matches("\\d{12}|\\d{16}")) {
-            throw new InValidDataException("Country");
+        if (!firstPassword.matches("\\d{16}")) {
+            throw new InValidDataException("Card number");
         }
         this.cardNumber = cardNumber;
+    }
+
+    @Override
+    public int compareTo(CreditCard cc) {
+        return this.getCardNumber().compareTo(cc.getCardNumber());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Card number: %s%nExpire date: %s%n", getCardNumber(), getExpireDate());
+    }
+
+    public void printCompleteInformation() {
+        System.out.printf("%nCard number: %d%nExpire date: %b%nCVV2: %s%n%n",
+                getCardNumber(), getExpireDate(), getCvv2());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        CreditCard cc = (CreditCard) obj;
+        return this.hashCode() == cc.hashCode();
     }
 }
