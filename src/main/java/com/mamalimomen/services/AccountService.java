@@ -2,7 +2,7 @@ package com.mamalimomen.services;
 
 import com.mamalimomen.base.services.BaseService;
 import com.mamalimomen.domains.Account;
-import com.mamalimomen.dtos.AccountSearchDTO;
+import com.mamalimomen.services.dtos.AccountSearchDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +14,7 @@ public interface AccountService extends BaseService<Account, Long> {
 
     List<Account> findPublishedAccounts();
 
-    List<Account> findAllUserAccounts(Long userID);
+    List<Account> showAllUserAccounts(Long userID);
 
     List<Account> advancedSearch(AccountSearchDTO asDTO);
 }

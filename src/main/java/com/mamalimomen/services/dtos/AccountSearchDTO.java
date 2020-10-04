@@ -1,4 +1,4 @@
-package com.mamalimomen.dtos;
+package com.mamalimomen.services.dtos;
 
 public class AccountSearchDTO {
     private Long categoryID;
