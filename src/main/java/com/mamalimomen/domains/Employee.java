@@ -36,8 +36,8 @@ public class Employee extends User {
     @JoinColumn(name = "fk_branch", nullable = false)
     private BankBranch workOffice;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_boss")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_boss", nullable = false)
     private Employee boss;
 
     @ManyToOne(optional = false)

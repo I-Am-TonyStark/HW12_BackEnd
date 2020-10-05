@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Entity
 @SelectBeforeUpdate
 @Table(name = "tbl_branch", catalog = "HW12_One", schema = "HW12_One",
-        uniqueConstraints = {@UniqueConstraint(name = "unique_branch_manager", columnNames = {"branchName", "manager"})})
+        uniqueConstraints = {@UniqueConstraint(name = "unique_branch_manager", columnNames = {"branch_name", "fk_manager"})})
 @NamedQueries({
         @NamedQuery(
                 name = "BankBranch.findAll",
@@ -42,8 +42,8 @@ public class BankBranch extends BaseEntity<Long> implements Comparable<BankBranc
     @JoinColumn(name = "fk_branch", foreignKey = @ForeignKey(name = "FK_BANK_BRANCH"))
     private Set<Account> accounts = new HashSet<>();
 
-    @OneToOne(optional = false, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "fk_manager", nullable = false, unique = true)
+    @OneToOne(optional = true, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "fk_manager", nullable = true, unique = true)
     private Employee manager;
 
     public BankBranch() {

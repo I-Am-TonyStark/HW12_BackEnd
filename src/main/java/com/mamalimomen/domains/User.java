@@ -95,7 +95,7 @@ public class User extends BaseEntity<Long> implements Comparable<User> {
 
     @Override
     public String toString() {
-        return String.format("FullName: %s%nAddress: %s%n", getFullName(), getAddress());
+        return String.format("%s%nAddress: %s%n", getFullName(), getAddress());
     }
 
     @Override

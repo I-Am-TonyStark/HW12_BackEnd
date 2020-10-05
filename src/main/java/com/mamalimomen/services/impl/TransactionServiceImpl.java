@@ -93,7 +93,7 @@ public class TransactionServiceImpl extends BaseServiceImpl<Transaction, Long, T
                     System.out.println(transaction);
                 }
                 break;
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Wrong format, Please enter an integer number!");

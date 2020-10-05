@@ -156,7 +156,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
                     return "You have not any Employee yet!";
                 }
                 for (int i = 1; i <= employees.size(); i++) {
-                    System.out.println(employees.get(i - 1));
+                    System.out.printf("%d. %s%n", i, employees.get(i - 1));
                 }
                 System.out.print("Which employee? ");
                 Employee employee = employees.get(SingletonScanner.readInteger() - 1);
@@ -177,7 +177,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
                 } else {
                     return "There is a problem, We can not update your Employee!";
                 }
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Wrong format, Please enter an integer number!");

@@ -159,7 +159,7 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRe
                 } else {
                     return "There is a problem, We can not update The Account activate state!";
                 }
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Wrong format, Please enter an integer number!");

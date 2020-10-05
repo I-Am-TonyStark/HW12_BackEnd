@@ -48,7 +48,7 @@ public final class Menus {
             System.out.println("You have not Permission for this operation yet!");
             return;
         }
-        employeeService.showEmployeesByBossNationalCode(employee.getNationalCode());
+        employeeService.updateMyEmployeePost(employee);
     }
 
     static void signUpOneEmployee(Employee employee) {
@@ -113,13 +113,14 @@ public final class Menus {
                 String answer = SingletonScanner.readLine();
                 if (!answer.equalsIgnoreCase("y"))
                     break;
+                continue;
             }
             Employee employee = oEmployee.get();
 
             System.out.print("Employee Password: ");
             String password = SingletonScanner.readLine();
             if (password.equals(employee.getPassword())) {
-                MenuFactory.getMenu(employee).showMenu();
+                MenuFactory.getMenu(employee).routerMenu();
                 break;
             } else {
                 System.out.println("Wrong Password!");
@@ -155,13 +156,14 @@ public final class Menus {
                 String answer = SingletonScanner.readLine();
                 if (!answer.equalsIgnoreCase("y"))
                     break;
+                continue;
             }
             Customer customer = oCustomer.get();
 
             System.out.print("Customer Password: ");
             String password = SingletonScanner.readLine();
             if (password.equals(customer.getPassword())) {
-                MenuFactory.getMenu(customer).showMenu();
+                MenuFactory.getMenu(customer).routerMenu();
                 break;
             } else {
                 System.out.println("Wrong Password!");

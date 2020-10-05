@@ -143,7 +143,7 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
                 }
             } catch (InValidDataException e) {
                 System.out.println("Wrong entered data format for " + e.getMessage() + "!");
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Wrong format, Please enter an integer number!");
@@ -218,7 +218,7 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
                 }
             } catch (InValidDataException e) {
                 System.out.println("Wrong entered data format for " + e.getMessage() + "!");
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Wrong format, Please enter an integer number!");
@@ -292,7 +292,7 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
                 return "Your allowed tries was ended!\nWe have to block your account for security reasons.";
             } catch (InValidDataException e) {
                 System.out.println("Wrong entered data format for " + e.getMessage() + "!");
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Wrong format, Please enter an integer number!");
