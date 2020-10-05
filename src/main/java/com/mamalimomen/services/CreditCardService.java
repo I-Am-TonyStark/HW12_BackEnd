@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface CreditCardService extends BaseService<CreditCard, Long> {
 
-    String createCreditCard();
+    Optional<CreditCard> createCreditCard();
 
     Optional<CreditCard> retrieveCreditCard();
 

@@ -1,7 +1,8 @@
 package com.mamalimomen.services.impl;
 
+import com.mamalimomen.base.controllers.utilities.InValidDataException;
+import com.mamalimomen.base.controllers.utilities.SingletonScanner;
 import com.mamalimomen.base.services.impl.BaseServiceImpl;
-import com.mamalimomen.domains.Account;
 import com.mamalimomen.domains.BankBranch;
 import com.mamalimomen.repositories.BankBranchRepository;
 import com.mamalimomen.repositories.impl.BankBranchRepositoryImpl;
@@ -16,23 +17,34 @@ public class BankBranchServiceImpl extends BaseServiceImpl<BankBranch, Long, Ban
         super(new BankBranchRepositoryImpl(em));
     }
 
-    @Override
-    public String createAccount() {
-        return null;
-    }
 
     @Override
-    public Optional<Account> retrieveAccount() {
+    public Optional<BankBranch> createBankBranch() {
         return Optional.empty();
     }
 
     @Override
-    public String updateAccount() {
+    public Optional<BankBranch> retrieveBankBranch() {
+        BankBranch bankBranch = new BankBranch();
+        while (true) {
+            try {
+                System.out.print("Branch Name: ");
+                String branchName = SingletonScanner.readLine();
+                bankBranch.setBranchName(branchName);
+                return baseRepository.findOneBankBranchByName(branchName);
+            } catch (InValidDataException e) {
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!");
+            }
+        }
+    }
+
+    @Override
+    public String updateBankBranch() {
         return null;
     }
 
     @Override
-    public String deleteAccount() {
+    public String deleteBankBranch() {
         return null;
     }
 

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface TransactionService extends BaseService<Transaction, Long> {
 
-    String createTransaction();
+    Optional<Transaction> createTransaction();
 
     Optional<Transaction> retrieveTransaction();
 

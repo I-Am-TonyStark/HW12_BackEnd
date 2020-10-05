@@ -19,6 +19,9 @@ import java.util.Date;
                 name = "Account.findAllActive",
                 query = "SELECT a FROM Account a WHERE a.active = TRUE"),
         @NamedQuery(
+                name = "Account.findOneByAccountNumber",
+                query = "SELECT a FROM Account a WHERE a.accountNumber = ?1"),
+        @NamedQuery(
                 name = "Account.findManyByCustomerNationalCode",
                 query = "SELECT a FROM Account a JOIN a.ownerCustomer w WHERE w.nationalCode = ?1")
 })
@@ -30,7 +33,7 @@ public class Account extends BaseEntity<Long> implements Comparable<Account> {
     @Transient
     private static long count = 0;
 
-    @Column(name = "account_number",nullable = false, updatable = false, unique = true)
+    @Column(name = "account_number", nullable = false, updatable = false, unique = true)
     private String accountNumber;
 
     @Column(name = "is_active", nullable = false)
@@ -44,7 +47,7 @@ public class Account extends BaseEntity<Long> implements Comparable<Account> {
     private Customer ownerCustomer;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "open_date",updatable = false, nullable = false)
+    @Column(name = "open_date", updatable = false, nullable = false)
     private Date openDate;
 
     @OneToOne(optional = false, cascade = CascadeType.ALL)
@@ -64,7 +67,7 @@ public class Account extends BaseEntity<Long> implements Comparable<Account> {
         this.active = active;
     }
 
-    public void setBalance(String balanceString) throws InValidDataException {
+    public void setBalanceString(String balanceString) throws InValidDataException {
         if (!balanceString.matches("\\d+\\.?\\d*")) {
             throw new InValidDataException("Balance amount");
         }

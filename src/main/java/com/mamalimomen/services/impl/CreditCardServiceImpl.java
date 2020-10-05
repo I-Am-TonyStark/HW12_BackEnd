@@ -1,5 +1,6 @@
 package com.mamalimomen.services.impl;
 
+import com.mamalimomen.base.controllers.utilities.InValidDataException;
 import com.mamalimomen.base.controllers.utilities.SingletonScanner;
 import com.mamalimomen.base.services.impl.BaseServiceImpl;
 import com.mamalimomen.domains.CreditCard;
@@ -23,8 +24,36 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
     }
 
     @Override
-    public String createCreditCard() {
-        return null;
+    public Optional<CreditCard> createCreditCard() {
+        CreditCard creditCard = new CreditCard();
+        while (true) {
+            try {
+                System.out.print("Card Number: ");
+                String cardNumber = SingletonScanner.readLine();
+                if (cardNumber.equalsIgnoreCase("esc")) {
+                    break;
+                }
+                creditCard.setCardNumber(cardNumber);
+                if (baseRepository.findOneCreditCardByNumber(cardNumber).isPresent()) {
+                    System.out.println("This Card Number has taken already!");
+                    continue;
+                }
+
+                System.out.print("First Password: ");
+                creditCard.setFirstPassword(SingletonScanner.readLine());
+
+                System.out.print("CVV2: ");
+                creditCard.setCvv2(SingletonScanner.readLine());
+
+                System.out.print("Expire date: ");
+                creditCard.setExpireDateString(SingletonScanner.readLine());
+
+                return Optional.of(creditCard);
+            } catch (InValidDataException e) {
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!");
+            }
+        }
+        return Optional.empty();
     }
 
     @Override

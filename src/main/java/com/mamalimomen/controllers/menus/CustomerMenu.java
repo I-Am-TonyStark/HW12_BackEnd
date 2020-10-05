@@ -17,7 +17,7 @@ public class CustomerMenu<U extends Customer> extends AbstractMenu<U> {
         while (true) {
             switch (showMenu()) {
                 case 1:
-                    Menus.changePassword(thisMenuUser);
+                    Menus.changeMyPassword(thisMenuUser);
                     break;
                 case 2:
                     Menus.seeAndModifyArticles(thisMenuUser);

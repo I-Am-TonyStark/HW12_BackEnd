@@ -6,6 +6,7 @@ import com.mamalimomen.repositories.AccountRepository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 public class AccountRepositoryImpl extends BaseRepositoryImpl<Account, Long> implements AccountRepository {
     public AccountRepositoryImpl(EntityManager em) {
@@ -20,6 +21,11 @@ public class AccountRepositoryImpl extends BaseRepositoryImpl<Account, Long> imp
     @Override
     public List<Account> findAllActiveAccounts() {
         return findAllByNamedQuery("Account.findAllActive", Account.class);
+    }
+
+    @Override
+    public Optional<Account> findOneAccountByAccountNumber(String accountNumber) {
+        return findOneByNamedQuery("Account.findOneByAccountNumber", accountNumber, Account.class);
     }
 
     @Override

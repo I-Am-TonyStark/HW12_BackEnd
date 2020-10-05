@@ -3,16 +3,18 @@ package com.mamalimomen.services.impl;
 import com.mamalimomen.base.services.impl.BaseServiceImpl;
 import com.mamalimomen.domains.Transaction;
 import com.mamalimomen.repositories.TransactionRepository;
+import com.mamalimomen.repositories.impl.TransactionRepositoryImpl;
 import com.mamalimomen.services.TransactionService;
 
+import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.Optional;
 import java.util.function.Predicate;
 
 public class TransactionServiceImpl extends BaseServiceImpl<Transaction, Long, TransactionRepository> implements TransactionService {
 
-    public TransactionServiceImpl(TransactionRepository serviceRepository) {
-        super(serviceRepository);
+    public TransactionServiceImpl(EntityManager em) {
+        super(new TransactionRepositoryImpl(em));
     }
 
     private Predicate<Transaction> getFilterByDatePredicate(Date date) {

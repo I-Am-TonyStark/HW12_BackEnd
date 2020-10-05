@@ -7,9 +7,11 @@ import java.util.Optional;
 
 public interface CustomerService extends BaseService<Customer, Long> {
 
-    String createCustomer();
+    Optional<Customer> createCustomer();
 
     Optional<Customer> retrieveCustomer();
+
+    String updateCustomerPassword(Customer customer);
 
     String updateCustomer();
 

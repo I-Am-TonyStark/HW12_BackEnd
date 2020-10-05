@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface PostService extends BaseService<Post, Long> {
 
-    String createPost();
+    Optional<Post> createPost();
 
     Optional<Post> retrievePost();
 

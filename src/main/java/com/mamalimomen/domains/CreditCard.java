@@ -32,7 +32,7 @@ public class CreditCard extends BaseEntity<Long> implements Comparable<CreditCar
     @Column(name = "second_password")
     private String secondPassword;
 
-    @Column(name = "cvv2", nullable = false, updatable = false, unique = true)
+    @Column(name = "cvv2", nullable = false, updatable = false)
     private String cvv2;
 
     @Temporal(TemporalType.DATE)
@@ -80,7 +80,7 @@ public class CreditCard extends BaseEntity<Long> implements Comparable<CreditCar
         this.cvv2 = cvv2;
     }
 
-    public void setStringExpireDate(String expireDate) throws InValidDataException {
+    public void setExpireDateString(String expireDate) throws InValidDataException {
         if (!expireDate.matches("[2][0][2-9][0-9]/(0[1-9]|1[0-2])")) {
             throw new InValidDataException("Expire date");
         }

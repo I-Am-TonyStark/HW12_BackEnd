@@ -21,9 +21,6 @@ public class User extends BaseEntity<Long> implements Comparable<User> {
     private String lastName;
 
     @Column(nullable = false, unique = true, updatable = false)
-    private String userName;
-
-    @Column(nullable = false, unique = true, updatable = false)
     private String nationalCode;
 
     @Column(nullable = false)
@@ -56,17 +53,6 @@ public class User extends BaseEntity<Long> implements Comparable<User> {
 
     public String getFullName() {
         return getFirstName() + " " + getLastName();
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) throws InValidDataException {
-        if (!userName.matches("(\\w\\d*){5,}")) {
-            throw new InValidDataException("Username");
-        }
-        this.userName = userName;
     }
 
     public String getNationalCode() {

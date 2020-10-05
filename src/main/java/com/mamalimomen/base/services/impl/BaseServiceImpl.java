@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class BaseServiceImpl<E extends BaseEntity<PK>, PK extends Number, Rep extends BaseRepository<E, PK>> implements BaseService<E, PK> {
-    private final Rep baseRepository;
+    protected final Rep baseRepository;
 
     public BaseServiceImpl(Rep serviceRepository) {
         this.baseRepository = serviceRepository;

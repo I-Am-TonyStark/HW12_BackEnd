@@ -22,6 +22,8 @@ public final class AppManager {
         serviceMapper.put(Services.CREDIT_CARD_SERVICE, new CreditCardServiceImpl(em));
         serviceMapper.put(Services.CUSTOMER_SERVICE, new CustomerServiceImpl(em));
         serviceMapper.put(Services.EMPLOYEE_SERVICE, new EmployeeServiceImpl(em));
+        serviceMapper.put(Services.POST_SERVICE, new PostServiceImpl(em));
+        serviceMapper.put(Services.TRANSACTION_SERVICE, new TransactionServiceImpl(em));
         emList.add(em);
         MenuFactory.getMenu(null).routerMenu();
     }

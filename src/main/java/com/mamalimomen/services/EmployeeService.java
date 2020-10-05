@@ -7,9 +7,11 @@ import java.util.Optional;
 
 public interface EmployeeService extends BaseService<Employee, Long> {
 
-    String createEmployee();
+    Optional<Employee> createEmployee(Employee manager);
 
     Optional<Employee> retrieveEmployee();
+
+    String updateEmployeePassword(Employee employee);
 
     String updateEmployee();
 
@@ -19,7 +21,11 @@ public interface EmployeeService extends BaseService<Employee, Long> {
 
     void showEmployeesByPostTitle();
 
-    void showEmployeesByBossNationalCode();
+    void showEmployeesByBossNationalCode(String bossNationalCode);
+
+    String updateMyEmployeePost(Employee manager);
+
+    boolean amIManager(Employee employee);
 
     void showEmployeesByBranchName();
 
