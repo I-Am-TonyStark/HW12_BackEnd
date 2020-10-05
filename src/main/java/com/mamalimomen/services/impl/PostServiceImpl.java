@@ -33,7 +33,7 @@ public class PostServiceImpl extends BaseServiceImpl<Post, Long, PostRepository>
                 post.setTitle(postTitle);
                 return baseRepository.findOnePostByTitle(postTitle);
             } catch (InValidDataException e) {
-                System.out.println("Wrong entered data format for " + e.getMessage() + "!");
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!\n");
             }
         }
     }

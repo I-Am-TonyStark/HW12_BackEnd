@@ -33,7 +33,7 @@ public class BankBranchServiceImpl extends BaseServiceImpl<BankBranch, Long, Ban
                 bankBranch.setBranchName(branchName);
                 return baseRepository.findOneBankBranchByName(branchName);
             } catch (InValidDataException e) {
-                System.out.println("Wrong entered data format for " + e.getMessage() + "!");
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!\n");
             }
         }
     }

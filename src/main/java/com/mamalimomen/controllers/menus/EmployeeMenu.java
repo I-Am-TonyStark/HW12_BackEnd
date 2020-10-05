@@ -8,7 +8,7 @@ public class EmployeeMenu<U extends Employee> extends AbstractMenu<U> {
         super(employee.getFullName() + "'s menu", new String[]{
                 "Change your password",
                 "Active or DeActive an Account",
-                "See Your Branch",
+                "See Your Branch Information",
                 "See your Employees",
                 "Change your Employees's Post",
                 "SignUp an Employee",

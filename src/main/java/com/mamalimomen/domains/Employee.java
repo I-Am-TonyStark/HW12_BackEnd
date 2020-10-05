@@ -13,13 +13,13 @@ import javax.persistence.*;
                 query = "SELECT e FROM Employee e"),
         @NamedQuery(
                 name = "Employee.findManyByPostTitle",
-                query = "SELECT e FROM Employee e JOIN e.post p where p.title = ?1"),
+                query = "SELECT e FROM Employee e JOIN e.post p WHERE p.title = ?1"),
         @NamedQuery(
                 name = "Employee.findManyByBossNationalCode",
-                query = "SELECT e FROM Employee e JOIN e.boss b where b.nationalCode = ?1"),
+                query = "SELECT e FROM Employee e JOIN e.boss b WHERE b.nationalCode = ?1 AND e.nationalCode <> b.nationalCode"),
         @NamedQuery(
                 name = "Employee.findManyByBranchName",
-                query = "SELECT e FROM Employee e JOIN e.workOffice o where o.branchName = ?1"),
+                query = "SELECT e FROM Employee e JOIN e.workOffice o WHERE o.branchName = ?1"),
         @NamedQuery(
                 name = "Employee.findOneByNationalCode",
                 query = "SELECT e FROM Employee e WHERE e.nationalCode = ?1")
@@ -32,17 +32,22 @@ public class Employee extends User {
     @Transient
     private static long count = 0;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_branch", nullable = false)
     private BankBranch workOffice;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_boss", nullable = false)
     private Employee boss;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_post", nullable = false)
     private Post post;
+
+    public Employee() {
+        this.setId(count);
+        count++;
+    }
 
     public BankBranch getWorkOffice() {
         return workOffice;
@@ -74,5 +79,10 @@ public class Employee extends User {
         if (obj == null || getClass() != obj.getClass()) return false;
         Employee e = (Employee) obj;
         return this.hashCode() == e.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%sPost: %s%nBoss: %s%nOffice: %s%n", super.toString(), getPost().getTitle(), getBoss().getFullName(), getWorkOffice().getBranchName());
     }
 }

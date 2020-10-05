@@ -29,6 +29,11 @@ public class Customer extends User {
     @OrderBy(value = "balance DESC")
     private Set<Account> activeAccounts = new HashSet<>();
 
+    public Customer() {
+        this.setId(count);
+        count++;
+    }
+
     public Set<Account> getActiveAccounts() {
         return activeAccounts;
     }

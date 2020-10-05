@@ -16,7 +16,7 @@
                       value="jdbc:mysql://127.0.0.1:3306/HW12_One?createDatabaseIfNotExist=true&amp;autoReconnection=true&amp;characterEncoding=UTF-8&amp;userSSL=false"/>
             <property name="javax.persistence.jdbc.user" value="mamali"/>
             <property name="javax.persistence.jdbc.password" value="mamali2120"/>
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="javax.persistence.sql-load-script-source" value="data.sql"/>
         </properties>
     </persistence-unit>

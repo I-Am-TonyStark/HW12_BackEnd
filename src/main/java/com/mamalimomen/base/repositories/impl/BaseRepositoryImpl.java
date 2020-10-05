@@ -6,6 +6,7 @@ import com.mamalimomen.base.repositories.BaseRepository;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.RollbackException;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class BaseRepositoryImpl<E extends BaseEntity<PK>, PK extends Number> imp
             em.getTransaction().commit();
 
             return true;
-        } catch (EntityExistsException exception) {
+        } catch (EntityExistsException | RollbackException e) {
             em.getTransaction().rollback();
         }
         return false;

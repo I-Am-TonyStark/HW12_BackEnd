@@ -35,14 +35,14 @@ public class BankBranch extends BaseEntity<Long> implements Comparable<BankBranc
     private String branchName;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "create_date",updatable = false, nullable = false)
+    @Column(name = "create_date", updatable = false, nullable = false)
     private Date createDate;
 
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "fk_branch", foreignKey = @ForeignKey(name = "FK_BANK_BRANCH"))
     private Set<Account> accounts = new HashSet<>();
 
-    @OneToOne(optional = true, cascade = CascadeType.PERSIST)
+    @OneToOne(optional = true, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_manager", nullable = true, unique = true)
     private Employee manager;
 
@@ -56,7 +56,7 @@ public class BankBranch extends BaseEntity<Long> implements Comparable<BankBranc
     }
 
     public void printCompleteInformation() {
-        System.out.printf("%nBranch name: %s%nManager fullName: %s%nCreate date: %s%nAccounts number: %d%nSum of balances: %d Rials%n%n",
+        System.out.printf("Branch name: %s%nManager fullName: %s%nFoundation date: %s%nAccounts number: %,d%nSum of balance: %,+014.2f Rials%n",
                 getBranchName(), getManager().getFullName(), getCreateDate(), getAccounts().size(), getSumBalance());
     }
 

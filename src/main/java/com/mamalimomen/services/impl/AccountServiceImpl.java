@@ -5,10 +5,7 @@ import com.mamalimomen.base.controllers.utilities.SingletonScanner;
 import com.mamalimomen.base.services.impl.BaseServiceImpl;
 import com.mamalimomen.controllers.utilities.AppManager;
 import com.mamalimomen.controllers.utilities.Services;
-import com.mamalimomen.domains.Account;
-import com.mamalimomen.domains.CreditCard;
-import com.mamalimomen.domains.Customer;
-import com.mamalimomen.domains.Transaction;
+import com.mamalimomen.domains.*;
 import com.mamalimomen.repositories.AccountRepository;
 import com.mamalimomen.repositories.impl.AccountRepositoryImpl;
 import com.mamalimomen.services.AccountService;
@@ -134,14 +131,20 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRe
 
     @Override
     public String updateAccountActiveState() {
+        User user = new User();
         while (true) {
-            System.out.print("Customer National Code: ");
-            String customerNationalCode = SingletonScanner.readLine();
-            List<Account> accounts = baseRepository.findManyAccountsByCustomerNationalCode(customerNationalCode);
-            if (accounts.isEmpty()) {
-                return "There is not any Customer with this National Code!";
-            }
             try {
+                System.out.print("Customer NationalCode: ");
+                String customerNationalCode = SingletonScanner.readLine();
+                if (customerNationalCode.equalsIgnoreCase("esc")) {
+                    break;
+                }
+                user.setNationalCode(customerNationalCode);
+                List<Account> accounts = baseRepository.findManyAccountsByCustomerNationalCode(customerNationalCode);
+                if (accounts.isEmpty()) {
+                    return "There is not any Customer with this National Code!";
+                }
+
                 for (int i = 1; i <= accounts.size(); i++) {
                     System.out.println(accounts.get(i - 1));
                 }
@@ -164,6 +167,8 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRe
             } catch (InputMismatchException e) {
                 System.out.println("Wrong format, Please enter an integer number!");
                 SingletonScanner.clearBuffer();
+            } catch (InValidDataException e) {
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!\n");
             }
         }
         return "You Cancelled this operation!";

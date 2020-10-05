@@ -63,7 +63,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
                     BankBranchService bankBranchService = (BankBranchService) AppManager.getService(Services.BANK_BRANCH_SERVICE);
                     Optional<BankBranch> oBankBranch = bankBranchService.retrieveBankBranch();
                     if (!oBankBranch.isPresent()) {
-                        System.out.println("There is not any Branch with this Name yet!");
+                        System.out.println("There is not any Branch with this Name yet!\n");
                         continue;
                     }
                     employee.setWorkOffice(oBankBranch.get());
@@ -76,7 +76,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
                     PostService postService = (PostService) AppManager.getService(Services.POST_SERVICE);
                     Optional<Post> oPost = postService.retrievePost();
                     if (!oPost.isPresent()) {
-                        System.out.println("There is not any post with this Title yet!");
+                        System.out.println("There is not any post with this Title yet!\n");
                         continue;
                     }
                     employee.setPost(oPost.get());
@@ -90,7 +90,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
                     break;
                 }
             } catch (InValidDataException e) {
-                System.out.println("Wrong entered data format for " + e.getMessage() + "!");
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!\n");
             }
         }
         return Optional.empty();
@@ -106,7 +106,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
                 employee.setNationalCode(employeeNationalCode);
                 return baseRepository.findOneEmployeeByNationalCode(employeeNationalCode);
             } catch (InValidDataException e) {
-                System.out.println("Wrong entered data format for " + e.getMessage() + "!");
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!\n");
             }
         }
     }
@@ -125,7 +125,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
                 if (oldPassword.equalsIgnoreCase("esc")) {
                     break;
                 } else if (!oldPassword.equals(employee.getPassword())) {
-                    System.out.println("Wrong Password!");
+                    System.out.println("Wrong Password!\n");
                     continue;
                 }
                 System.out.print("New Password: ");
@@ -156,7 +156,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
                     return "You have not any Employee yet!";
                 }
                 for (int i = 1; i <= employees.size(); i++) {
-                    System.out.printf("%d. %s%n", i, employees.get(i - 1));
+                    System.out.printf("%d. %s", i, employees.get(i - 1));
                 }
                 System.out.print("Which employee? ");
                 Employee employee = employees.get(SingletonScanner.readInteger() - 1);
@@ -164,9 +164,8 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
                 while (true) {
                     PostService postService = (PostService) AppManager.getService(Services.POST_SERVICE);
                     Optional<Post> oPost = postService.retrievePost();
-                    if (!oPost.isPresent()) {
-                        System.out.println("There is not any post with this Title yet!");
-                        continue;
+                    if (oPost.isEmpty()) {
+                        return "There is not any post with this Title yet!";
                     }
                     employee.setPost(oPost.get());
                     break;
@@ -180,7 +179,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
             } catch (IndexOutOfBoundsException e) {
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Wrong format, Please enter an integer number!");
+                System.out.println("Wrong format, enter an integer number please!\n");
                 SingletonScanner.clearBuffer();
             }
         }
@@ -214,8 +213,8 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
             System.out.println("You have not any Employee yet!");
             return;
         }
-        for (Employee employee : employees) {
-            System.out.println(employee);
+        for (int i = 1; i <= employees.size(); i++) {
+            System.out.printf("%d. %s", i, employees.get(i - 1));
         }
     }
 

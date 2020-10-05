@@ -32,7 +32,8 @@ public final class Menus {
     }
 
     static void seeYourBranch(Employee employee) {
-        System.out.println(employee.getWorkOffice());
+        System.out.printf("%n====== %s ======%n", "SHOW YOUR BRANCH INFORMATION");
+        employee.getWorkOffice().printCompleteInformation();
     }
 
     static void seeMyEmployees(Employee employee) {
@@ -48,7 +49,7 @@ public final class Menus {
             System.out.println("You have not Permission for this operation yet!");
             return;
         }
-        employeeService.updateMyEmployeePost(employee);
+        System.out.println(employeeService.updateMyEmployeePost(employee));
     }
 
     static void signUpOneEmployee(Employee employee) {

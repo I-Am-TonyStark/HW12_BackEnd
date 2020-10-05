@@ -72,7 +72,7 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer, Long, Custome
                 customer.setNationalCode(customerNationalCode);
                 return baseRepository.findOneCustomerByNationalCode(customerNationalCode);
             } catch (InValidDataException e) {
-                System.out.println("Wrong entered data format for " + e.getMessage() + "!");
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!\n");
             }
         }
     }
@@ -91,7 +91,7 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer, Long, Custome
                 if (oldPassword.equalsIgnoreCase("esc")) {
                     break;
                 } else if (!oldPassword.equals(customer.getPassword())) {
-                    System.out.println("Wrong Password!");
+                    System.out.println("Wrong Password!\n");
                     continue;
                 }
                 System.out.print("New Password: ");

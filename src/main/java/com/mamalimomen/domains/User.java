@@ -34,7 +34,7 @@ public class User extends BaseEntity<Long> implements Comparable<User> {
     }
 
     public void setFirstName(String firstName) throws InValidDataException {
-        if (!firstName.matches("\\w{3,}")) {
+        if (!firstName.matches("(\\w\\s?){3,}")) {
             throw new InValidDataException("FirstName");
         }
         this.firstName = firstName;
@@ -45,7 +45,7 @@ public class User extends BaseEntity<Long> implements Comparable<User> {
     }
 
     public void setLastName(String lastName) throws InValidDataException {
-        if (!lastName.matches("\\w{3,}")) {
+        if (!lastName.matches("(\\w\\s?){3,}")) {
             throw new InValidDataException("LastName");
         }
         this.lastName = lastName;
@@ -95,7 +95,7 @@ public class User extends BaseEntity<Long> implements Comparable<User> {
 
     @Override
     public String toString() {
-        return String.format("%s%nAddress: %s%n", getFullName(), getAddress());
+        return String.format("%s%nAddress: %s", getFullName(), getAddress());
     }
 
     @Override
