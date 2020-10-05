@@ -2,6 +2,7 @@ package com.mamalimomen.services;
 
 import com.mamalimomen.base.services.BaseService;
 import com.mamalimomen.domains.CreditCard;
+import com.mamalimomen.domains.Customer;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,15 +23,13 @@ public interface CreditCardService extends BaseService<CreditCard, Long> {
 
     String setFirstPassword();
 
-    String changeFirstPassword();
+    String changeFirstPassword(Customer customer);
 
-    String setSecondPassword();
+    String setSecondPassword(CreditCard creditCard);
 
-    String changeSecondPassword();
+    String changeSecondPassword(Customer customer);
 
-    String cardToCardTransaction();
+    String cardToCardTransaction(Customer customer);
 
     String checkAccountBalanceTransaction();
-
-    boolean transactionPermission();
 }

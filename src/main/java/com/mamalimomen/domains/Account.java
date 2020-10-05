@@ -22,6 +22,9 @@ import java.util.Date;
                 name = "Account.findOneByAccountNumber",
                 query = "SELECT a FROM Account a WHERE a.accountNumber = ?1"),
         @NamedQuery(
+                name = "Account.findManyActiveByCustomerNationalCode",
+                query = "SELECT a FROM Account a JOIN a.ownerCustomer w WHERE a.active = TRUE AND w.nationalCode = ?1"),
+        @NamedQuery(
                 name = "Account.findManyByCustomerNationalCode",
                 query = "SELECT a FROM Account a JOIN a.ownerCustomer w WHERE w.nationalCode = ?1")
 })

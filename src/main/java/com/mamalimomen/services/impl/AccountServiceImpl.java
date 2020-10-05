@@ -96,6 +96,11 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRe
     }
 
     @Override
+    public List<Account> retrieveManyActiveAccountsByCustomerNationalCode(String customerNationalCode) {
+        return baseRepository.findManyActiveAccountsByCustomerNationalCode(customerNationalCode);
+    }
+
+    @Override
     public String updateAccount() {
         return null;
     }
@@ -158,7 +163,13 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRe
     }
 
     @Override
-    public void showAccountsByCustomerNationalNumber() {
-
+    public void showActiveAccountsByCustomerNationalNumber(Customer customer) {
+        List<Account> accounts = retrieveManyActiveAccountsByCustomerNationalCode(customer.getNationalCode());
+        if (accounts.isEmpty()) {
+            System.out.println("You have not any Active Account now!");
+        }
+        for (Account account : accounts) {
+            System.out.println(account);
+        }
     }
 }

@@ -13,5 +13,7 @@ public interface AccountRepository extends BaseRepository<Account, Long> {
 
     Optional<Account> findOneAccountByAccountNumber(String accountNumber);
 
+    List<Account> findManyActiveAccountsByCustomerNationalCode(String customerNationalCode);
+
     List<Account> findManyAccountsByCustomerNationalCode(String customerNationalCode);
 }

@@ -9,6 +9,7 @@ import com.mamalimomen.domains.Customer;
 import com.mamalimomen.domains.Employee;
 import com.mamalimomen.domains.User;
 import com.mamalimomen.services.AccountService;
+import com.mamalimomen.services.CreditCardService;
 import com.mamalimomen.services.CustomerService;
 import com.mamalimomen.services.EmployeeService;
 
@@ -72,6 +73,30 @@ public final class Menus {
                     break;
             }
         }
+    }
+
+    static void changeCardFirstPassword(Customer customer) {
+        System.out.printf("%n====== %s ======%n", "CHANGE CARD FIRST PASSWORD");
+        CreditCardService creditCardService = (CreditCardService) AppManager.getService(Services.CREDIT_CARD_SERVICE);
+        System.out.println(creditCardService.changeFirstPassword(customer));
+    }
+
+    static void seeMyActiveAccountBalance(Customer customer) {
+        System.out.printf("%n====== %s ======%n", "YOUR ACTIVE ACCOUNTS");
+        AccountService accountService = (AccountService) AppManager.getService(Services.ACCOUNT_SERVICE);
+        accountService.showActiveAccountsByCustomerNationalNumber(customer);
+    }
+
+    static void changeCardSecondPassword(Customer customer) {
+        System.out.printf("%n====== %s ======%n", "CHANGE CARD SECOND PASSWORD");
+        CreditCardService creditCardService = (CreditCardService) AppManager.getService(Services.CREDIT_CARD_SERVICE);
+        System.out.println(creditCardService.changeSecondPassword(customer));
+    }
+
+    static void cardToCardTransaction(Customer customer) {
+        System.out.printf("%n====== %s ======%n", "CARD TO CARD TRANSACTION");
+        CreditCardService creditCardService = (CreditCardService) AppManager.getService(Services.CREDIT_CARD_SERVICE);
+        System.out.println(creditCardService.cardToCardTransaction(customer));
     }
 
     static void logInEmployee() {

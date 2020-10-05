@@ -1,5 +1,6 @@
 package com.mamalimomen.domains;
 
+import com.mamalimomen.base.controllers.utilities.InValidDataException;
 import com.mamalimomen.base.domains.BaseEntity;
 import org.hibernate.annotations.SelectBeforeUpdate;
 
@@ -89,6 +90,13 @@ public class Transaction extends BaseEntity<Long> implements Comparable<Transact
 
     public void setMoneyAmount(BigDecimal moneyAmount) {
         this.moneyAmount = moneyAmount;
+    }
+
+    public void setMoneyAmountString(String moneyAmountString) throws InValidDataException {
+        if (!moneyAmountString.matches("\\d+\\.?\\d*")) {
+            throw new InValidDataException("Money amount");
+        }
+        this.setMoneyAmount(BigDecimal.valueOf(Double.valueOf(moneyAmountString)));
     }
 
     public BigDecimal getTCost() {

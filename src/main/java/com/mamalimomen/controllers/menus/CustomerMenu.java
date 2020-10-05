@@ -20,13 +20,19 @@ public class CustomerMenu<U extends Customer> extends AbstractMenu<U> {
                     Menus.changeMyPassword(thisMenuUser);
                     break;
                 case 2:
-                    Menus.seeAndModifyArticles(thisMenuUser);
+                    Menus.changeCardFirstPassword(thisMenuUser);
                     break;
                 case 3:
-                    Menus.writeNewArticle(thisMenuUser);
+                    Menus.changeCardSecondPassword(thisMenuUser);
                     break;
                 case 4:
-                    Menus.seeCreditCard(thisMenuUser);
+                    Menus.seeMyActiveAccountBalance(thisMenuUser);
+                    break;
+                case 5:
+                    Menus.cardToCardTransaction(thisMenuUser);
+                    break;
+                case 6:
+                    Menus.seeMyTransactionsByDate(thisMenuUser);
                     break;
                 default:
                     return;
