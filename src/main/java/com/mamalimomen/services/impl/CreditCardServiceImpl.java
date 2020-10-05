@@ -248,7 +248,7 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
 
                 System.out.print("Enter Destination ");
                 Optional<CreditCard> oCreditCard = retrieveCreditCard();
-                if (!oCreditCard.isPresent()) {
+                if (oCreditCard.isEmpty()) {
                     return "There is not any Credit Card with this number";
                 }
                 CreditCard destinationCreditCard = oCreditCard.get();
@@ -260,6 +260,7 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
                 transaction.setDestinationCardNumber(destinationCreditCard.getCardNumber());
                 transaction.settCost(cardToCardTransactionCost);
                 transaction.setAccount(account);
+                transaction.setSucceed(true);
 
                 while (tries < 3) {
                     System.out.print("Enter origin card second password: ");
@@ -277,9 +278,18 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
                             && originCardCvv2.equals(originCreditCard.getCvv2())
                             && date.equals(originCreditCard.getExpireDate())) {
 
+                        if (accountService.updateAccountBalanceAuto(transaction)) {
+                            return "Your transaction done successfully!\nTransaction ID: " + transaction.getId();
+                        } else if (transaction.getSucceed()) {
+                            return "You have not enough money for this transaction";
+                        }
+                        return "There is a database Error for this transaction";
                     }
                     tries++;
                 }
+                account.setActive(false);
+                accountService.updateOne(account);
+                return "Your allowed tries was ended!\nWe have to block your account for security reasons.";
             } catch (InValidDataException e) {
                 System.out.println("Wrong entered data format for " + e.getMessage() + "!");
             } catch (ArrayIndexOutOfBoundsException e) {

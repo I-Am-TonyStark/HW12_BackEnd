@@ -8,11 +8,13 @@ import com.mamalimomen.controllers.utilities.Services;
 import com.mamalimomen.domains.Account;
 import com.mamalimomen.domains.CreditCard;
 import com.mamalimomen.domains.Customer;
+import com.mamalimomen.domains.Transaction;
 import com.mamalimomen.repositories.AccountRepository;
 import com.mamalimomen.repositories.impl.AccountRepositoryImpl;
 import com.mamalimomen.services.AccountService;
 import com.mamalimomen.services.CreditCardService;
 import com.mamalimomen.services.CustomerService;
+import com.mamalimomen.services.TransactionService;
 
 import javax.persistence.EntityManager;
 import java.util.Date;
@@ -50,9 +52,9 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRe
 
                 CustomerService customerService = (CustomerService) AppManager.getService(Services.CUSTOMER_SERVICE);
                 Optional<Customer> oCustomer = customerService.retrieveCustomer();
-                if (!oCustomer.isPresent()) {
+                if (oCustomer.isEmpty()) {
                     oCustomer = customerService.createCustomer();
-                    if (!oCustomer.isPresent()) {
+                    if (oCustomer.isEmpty()) {
                         break;
                     }
                 }
@@ -101,7 +103,32 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRe
     }
 
     @Override
-    public String updateAccount() {
+    public boolean updateAccountBalanceAuto(Transaction transaction) {
+        TransactionService transactionService = (TransactionService) AppManager.getService(Services.TRANSACTION_SERVICE);
+        try {
+            Optional<Account> oOriginAccount = baseRepository.findOneAccountByCreditCardNumber(transaction.getOriginCardNumber());
+            Optional<Account> oDestinationAccount = baseRepository.findOneAccountByCreditCardNumber(transaction.getDestinationCardNumber());
+            Account originAccount = oOriginAccount.get();
+            Account destinationAccount = oDestinationAccount.get();
+            originAccount.setBalance(originAccount.getBalance().subtract(transaction.getMoneyAmount().add(transaction.getTCost())));
+            destinationAccount.setBalance(destinationAccount.getBalance().add(transaction.getMoneyAmount()));
+            if (baseRepository.updateOne(originAccount) &&
+                    baseRepository.updateOne(destinationAccount)) {
+                transaction.setDate(new Date(System.currentTimeMillis()));
+                transactionService.saveOne(transaction);
+                return true;
+            }
+        } catch (InValidDataException e) {
+            return false;
+        }
+        transaction.setSucceed(false);
+        transaction.setDate(new Date(System.currentTimeMillis()));
+        transactionService.saveOne(transaction);
+        return false;
+    }
+
+    @Override
+    public String updateAccountBalanceManually() {
         return null;
     }
 

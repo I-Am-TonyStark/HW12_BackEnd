@@ -1,6 +1,6 @@
 package com.mamalimomen.services.dtos;
 
-public class UserInfoDTO {
+/*public class UserInfoDTO {
 
     public UserInfoDTO(Long id, String firstName, String lastName, Role role, String city) {
         this.id = id;
@@ -69,4 +69,4 @@ public class UserInfoDTO {
     public String toString() {
         return String.format("%s: %s", getFirstName(), getRole());
     }
-}
+}*/

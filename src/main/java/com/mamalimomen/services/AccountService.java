@@ -3,6 +3,7 @@ package com.mamalimomen.services;
 import com.mamalimomen.base.services.BaseService;
 import com.mamalimomen.domains.Account;
 import com.mamalimomen.domains.Customer;
+import com.mamalimomen.domains.Transaction;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,9 @@ public interface AccountService extends BaseService<Account, Long> {
 
     List<Account> retrieveManyActiveAccountsByCustomerNationalCode(String customerNationalCode);
 
-    String updateAccount();
+    boolean updateAccountBalanceAuto(Transaction transaction);
+
+    String updateAccountBalanceManually();
 
     String updateAccountActiveState();
 

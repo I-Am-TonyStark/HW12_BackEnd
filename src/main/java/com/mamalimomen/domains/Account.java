@@ -22,6 +22,9 @@ import java.util.Date;
                 name = "Account.findOneByAccountNumber",
                 query = "SELECT a FROM Account a WHERE a.accountNumber = ?1"),
         @NamedQuery(
+                name = "Account.findOneByCreditCardNumber",
+                query = "SELECT a FROM Account a JOIN a.activeCard c WHERE c.cardNumber = ?1"),
+        @NamedQuery(
                 name = "Account.findManyActiveByCustomerNationalCode",
                 query = "SELECT a FROM Account a JOIN a.ownerCustomer w WHERE a.active = TRUE AND w.nationalCode = ?1"),
         @NamedQuery(
@@ -74,14 +77,17 @@ public class Account extends BaseEntity<Long> implements Comparable<Account> {
         if (!balanceString.matches("\\d+\\.?\\d*")) {
             throw new InValidDataException("Balance amount");
         }
-        this.setBalance(BigDecimal.valueOf(Double.valueOf(balanceString)));
+        this.setBalance(BigDecimal.valueOf(Double.parseDouble(balanceString)));
     }
 
     public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(BigDecimal balance) throws InValidDataException {
+        if (balance.compareTo(BigDecimal.ZERO) < 0) {
+            throw new InValidDataException("Mines Balance amount");
+        }
         this.balance = balance;
     }
 
@@ -131,7 +137,7 @@ public class Account extends BaseEntity<Long> implements Comparable<Account> {
     }
 
     public void printCompleteInformation() {
-        System.out.printf("%nAccount Number: %d%nIs Active: %b%nBalance amount: %s%nOwner: %s%nOpen Date: %s%nCredit Card: %s%n%n",
+        System.out.printf("%nAccount Number: %s%nIs Active: %b%nBalance amount: %s%nOwner: %s%nOpen Date: %s%nCredit Card: %s%n%n",
                 getAccountNumber(), getActive(), getBalance(), getOwnerCustomer(), getOpenDate(), getActiveCard());
     }
 

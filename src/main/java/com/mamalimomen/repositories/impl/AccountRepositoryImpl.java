@@ -29,6 +29,11 @@ public class AccountRepositoryImpl extends BaseRepositoryImpl<Account, Long> imp
     }
 
     @Override
+    public Optional<Account> findOneAccountByCreditCardNumber(String cardNumber) {
+        return findOneByNamedQuery("Account.findOneByCreditCardNumber", cardNumber, Account.class);
+    }
+
+    @Override
     public List<Account> findManyActiveAccountsByCustomerNationalCode(String customerNationalCode) {
         return findManyByNamedQuery("Account.findManyActiveByCustomerNationalCode", customerNationalCode, Account.class);
     }

@@ -8,10 +8,7 @@ import com.mamalimomen.domains.Account;
 import com.mamalimomen.domains.Customer;
 import com.mamalimomen.domains.Employee;
 import com.mamalimomen.domains.User;
-import com.mamalimomen.services.AccountService;
-import com.mamalimomen.services.CreditCardService;
-import com.mamalimomen.services.CustomerService;
-import com.mamalimomen.services.EmployeeService;
+import com.mamalimomen.services.*;
 
 import java.util.Optional;
 
@@ -64,7 +61,7 @@ public final class Menus {
             }
             Optional<Employee> oEmployee = employeeService.createEmployee(employee);
             if (oEmployee.isPresent()) {
-                System.out.printf("%s%n%s%n", "Your Employee was Employment Successfully!");
+                System.out.printf("%s%n", "Your Employee was Employment Successfully!");
                 break;
             } else {
                 System.out.print("Can not Employment any new Employee!\nDo you want try again (y/n)? ");
@@ -99,13 +96,19 @@ public final class Menus {
         System.out.println(creditCardService.cardToCardTransaction(customer));
     }
 
+    static void seeMyTransactionsByDate(Customer customer) {
+        System.out.printf("%n====== %s ======%n", "SEE YOUR TRANSACTIONS");
+        TransactionService transactionService = (TransactionService) AppManager.getService(Services.TRANSACTION_SERVICE);
+        transactionService.showTransactionsByAccountNumberAndDate(customer);
+    }
+
     static void logInEmployee() {
         while (true) {
             System.out.printf("%n====== %s ======%n", "LOGIN EMPLOYEE");
             EmployeeService employeeService = (EmployeeService) AppManager.getService(Services.EMPLOYEE_SERVICE);
             Optional<Employee> oEmployee = employeeService.retrieveEmployee();
 
-            if (!oEmployee.isPresent()) {
+            if (oEmployee.isEmpty()) {
                 System.out.print("There is not any Employee with this national code!\nDo you want try again (y/n)? ");
                 String answer = SingletonScanner.readLine();
                 if (!answer.equalsIgnoreCase("y"))
@@ -147,7 +150,7 @@ public final class Menus {
             CustomerService customerService = (CustomerService) AppManager.getService(Services.CUSTOMER_SERVICE);
             Optional<Customer> oCustomer = customerService.retrieveCustomer();
 
-            if (!oCustomer.isPresent()) {
+            if (oCustomer.isEmpty()) {
                 System.out.print("There is not any Customer with this national code!\nDo you want try again (y/n)? ");
                 String answer = SingletonScanner.readLine();
                 if (!answer.equalsIgnoreCase("y"))
