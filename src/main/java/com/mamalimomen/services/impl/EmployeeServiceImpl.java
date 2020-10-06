@@ -21,7 +21,6 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 
-//FIXME
 public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, EmployeeRepository> implements EmployeeService {
     public EmployeeServiceImpl(EntityManager em) {
         super(new EmployeeRepositoryImpl(em));
@@ -66,7 +65,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
                 while (true) {
                     BankBranchService bankBranchService = (BankBranchService) AppManager.getService(Services.BANK_BRANCH_SERVICE);
                     Optional<BankBranch> oBankBranch = bankBranchService.retrieveBankBranch();
-                    if (!oBankBranch.isPresent()) {
+                    if (oBankBranch.isEmpty()) {
                         System.out.println("There is not any Branch with this Name yet!\n");
                         continue;
                     }
@@ -79,7 +78,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
                 while (true) {
                     PostService postService = (PostService) AppManager.getService(Services.POST_SERVICE);
                     Optional<Post> oPost = postService.retrievePost();
-                    if (!oPost.isPresent()) {
+                    if (oPost.isEmpty()) {
                         System.out.println("There is not any post with this Title yet!\n");
                         continue;
                     }
@@ -165,15 +164,12 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
                 System.out.print("Which employee? ");
                 Employee employee = employees.get(SingletonScanner.readInteger() - 1);
 
-                while (true) {
-                    PostService postService = (PostService) AppManager.getService(Services.POST_SERVICE);
-                    Optional<Post> oPost = postService.retrievePost();
-                    if (oPost.isEmpty()) {
-                        return "There is not any post with this Title yet!";
-                    }
-                    employee.setPost(oPost.get());
-                    break;
+                PostService postService = (PostService) AppManager.getService(Services.POST_SERVICE);
+                Optional<Post> oPost = postService.retrievePost();
+                if (oPost.isEmpty()) {
+                    return "There is not any post with this Title yet!";
                 }
+                employee.setPost(oPost.get());
 
                 if (baseRepository.updateOne(employee)) {
                     return "Your Employee was updated successfully!";

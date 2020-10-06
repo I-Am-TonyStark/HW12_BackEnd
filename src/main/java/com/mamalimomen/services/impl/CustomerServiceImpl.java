@@ -13,7 +13,6 @@ import com.mamalimomen.services.CustomerService;
 import javax.persistence.EntityManager;
 import java.util.Optional;
 
-//FIXME
 public class CustomerServiceImpl extends BaseServiceImpl<Customer, Long, CustomerRepository> implements CustomerService {
     public CustomerServiceImpl(EntityManager em) {
         super(new CustomerRepositoryImpl(em));

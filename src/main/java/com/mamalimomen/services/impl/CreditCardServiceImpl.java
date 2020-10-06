@@ -22,7 +22,6 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 
-//FIXME
 public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, CreditCardRepository> implements CreditCardService {
 
     private static final BigDecimal cardToCardTransactionCost = BigDecimal.valueOf(5_000.00);

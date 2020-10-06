@@ -19,7 +19,6 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 
-//FIXME
 public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRepository> implements AccountService {
 
     public AccountServiceImpl(EntityManager em) {
@@ -61,7 +60,7 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRe
 
                 CreditCardService creditCardService = (CreditCardService) AppManager.getService(Services.CREDIT_CARD_SERVICE);
                 Optional<CreditCard> oCreditCard = creditCardService.createCreditCard();
-                if (!oCreditCard.isPresent()) {
+                if (oCreditCard.isEmpty()) {
                     break;
                 }
                 account.setActiveCard(oCreditCard.get());
@@ -118,8 +117,7 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRe
                 transactionService.saveOne(inverseTransaction);
                 return true;
             }
-        } catch (InValidDataException e) {
-        }
+        } catch (InValidDataException ignored) {}
         transaction.setSucceed(false);
         transaction.setDate(new Date(System.currentTimeMillis()));
         transaction.cloneMeTo(inverseTransaction, destinationAccount);

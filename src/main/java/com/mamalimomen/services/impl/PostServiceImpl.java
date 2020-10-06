@@ -11,8 +11,6 @@ import com.mamalimomen.services.PostService;
 import javax.persistence.EntityManager;
 import java.util.Optional;
 
-//FIXME
-
 public class PostServiceImpl extends BaseServiceImpl<Post, Long, PostRepository> implements PostService {
     public PostServiceImpl(EntityManager em) {
         super(new PostRepositoryImpl(em));
@@ -20,7 +18,7 @@ public class PostServiceImpl extends BaseServiceImpl<Post, Long, PostRepository>
 
     @Override
     public Optional<Post> createPost() {
-        return null;
+        return Optional.empty();
     }
 
     @Override
