@@ -1,6 +1,7 @@
 package com.mamalimomen.domains;
 
 import com.mamalimomen.base.controllers.utilities.InValidDataException;
+import com.mamalimomen.base.controllers.utilities.SecurityManager;
 import com.mamalimomen.base.domains.BaseEntity;
 
 import javax.persistence.Column;
@@ -82,7 +83,7 @@ public class User extends BaseEntity<Long> implements Comparable<User> {
         if (!password.matches("[a-zA-Z0-9]{3,}")) {
             throw new InValidDataException("Password");
         }
-        this.password = password;
+        this.password = SecurityManager.getPasswordHash(password);
     }
 
     @Override

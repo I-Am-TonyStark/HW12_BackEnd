@@ -31,14 +31,14 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRe
         Account account = new Account();
         while (true) {
             try {
-                System.out.print("Account Number: ");
+                System.out.print("Account Number (13 Digit): ");
                 String accountNumber = SingletonScanner.readLine();
                 if (accountNumber.equalsIgnoreCase("esc")) {
                     break;
                 }
                 account.setAccountNumber(accountNumber);
                 if (baseRepository.findOneAccountByAccountNumber(accountNumber).isPresent()) {
-                    System.out.println("This Account Number has taken already!");
+                    System.out.println("This Account Number has taken already!\n");
                     continue;
                 }
 
@@ -73,7 +73,7 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRe
                     break;
                 }
             } catch (InValidDataException e) {
-                System.out.println("Wrong entered data format for " + e.getMessage() + "!");
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!\n");
             }
         }
         return Optional.empty();
@@ -102,25 +102,29 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRe
     @Override
     public boolean updateAccountBalanceAuto(Transaction transaction) {
         TransactionService transactionService = (TransactionService) AppManager.getService(Services.TRANSACTION_SERVICE);
+        Transaction inverseTransaction = new Transaction();
+        Optional<Account> oOriginAccount = baseRepository.findOneAccountByCreditCardNumber(transaction.getOriginCardNumber());
+        Optional<Account> oDestinationAccount = baseRepository.findOneAccountByCreditCardNumber(transaction.getDestinationCardNumber());
+        Account originAccount = oOriginAccount.get();
+        Account destinationAccount = oDestinationAccount.get();
         try {
-            Optional<Account> oOriginAccount = baseRepository.findOneAccountByCreditCardNumber(transaction.getOriginCardNumber());
-            Optional<Account> oDestinationAccount = baseRepository.findOneAccountByCreditCardNumber(transaction.getDestinationCardNumber());
-            Account originAccount = oOriginAccount.get();
-            Account destinationAccount = oDestinationAccount.get();
             originAccount.setBalance(originAccount.getBalance().subtract(transaction.getMoneyAmount().add(transaction.getTCost())));
             destinationAccount.setBalance(destinationAccount.getBalance().add(transaction.getMoneyAmount()));
             if (baseRepository.updateOne(originAccount) &&
                     baseRepository.updateOne(destinationAccount)) {
                 transaction.setDate(new Date(System.currentTimeMillis()));
+                transaction.cloneMeTo(inverseTransaction, destinationAccount);
                 transactionService.saveOne(transaction);
+                transactionService.saveOne(inverseTransaction);
                 return true;
             }
         } catch (InValidDataException e) {
-            return false;
         }
         transaction.setSucceed(false);
         transaction.setDate(new Date(System.currentTimeMillis()));
+        transaction.cloneMeTo(inverseTransaction, destinationAccount);
         transactionService.saveOne(transaction);
+        transactionService.saveOne(inverseTransaction);
         return false;
     }
 
@@ -146,7 +150,7 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRe
                 }
 
                 for (int i = 1; i <= accounts.size(); i++) {
-                    System.out.println(accounts.get(i - 1));
+                    System.out.printf("%d. %s%n", i, accounts.get(i - 1));
                 }
                 System.out.print("Which account? ");
                 Account account = accounts.get(SingletonScanner.readInteger() - 1);
@@ -200,8 +204,9 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long, AccountRe
         if (accounts.isEmpty()) {
             System.out.println("You have not any Active Account now!");
         }
-        for (Account account : accounts) {
-            System.out.println(account);
+        for (int i = 1; i <= accounts.size(); i++, System.out.println()) {
+            System.out.printf("%d. ", i);
+            accounts.get(i - 1).printCompleteInformation();
         }
     }
 }

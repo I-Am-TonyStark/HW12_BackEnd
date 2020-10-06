@@ -123,6 +123,7 @@ public class BaseRepositoryImpl<E extends BaseEntity<PK>, PK extends Number> imp
         return em.createNamedQuery(namedQuery, c)
                 .setParameter(1, parameter1)
                 .setParameter(2, parameter2)
+                .setParameter(3, parameter3)
                 .getResultList();
     }
 

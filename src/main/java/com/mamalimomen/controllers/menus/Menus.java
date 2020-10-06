@@ -1,5 +1,6 @@
 package com.mamalimomen.controllers.menus;
 
+import com.mamalimomen.base.controllers.utilities.SecurityManager;
 import com.mamalimomen.base.controllers.utilities.SingletonScanner;
 import com.mamalimomen.controllers.utilities.AppManager;
 import com.mamalimomen.controllers.utilities.MenuFactory;
@@ -20,7 +21,10 @@ public final class Menus {
             AccountService accountService = (AccountService) AppManager.getService(Services.ACCOUNT_SERVICE);
             Optional<Account> oAccount = accountService.createAccount();
             if (oAccount.isPresent()) {
-                System.out.printf("%s%n%s%n", "Your Account was created Successfully!", oAccount.get());
+                BankBranchService bankBranchService = (BankBranchService) AppManager.getService(Services.BANK_BRANCH_SERVICE);
+                System.out.println(bankBranchService.updateBankBranchAccounts(employee, oAccount.get()));
+                System.out.printf("%s%n%n", "Your Account was created Successfully!");
+                oAccount.get().printCompleteInformation();
                 break;
             } else {
                 System.out.print("Can not create any new Account!\nDo you want try again (y/n)? ");
@@ -120,7 +124,7 @@ public final class Menus {
 
             System.out.print("Employee Password: ");
             String password = SingletonScanner.readLine();
-            if (password.equals(employee.getPassword())) {
+            if (SecurityManager.checkPasswordHash(password, employee.getPassword())) {
                 MenuFactory.getMenu(employee).routerMenu();
                 break;
             } else {
@@ -163,7 +167,7 @@ public final class Menus {
 
             System.out.print("Customer Password: ");
             String password = SingletonScanner.readLine();
-            if (password.equals(customer.getPassword())) {
+            if (SecurityManager.checkPasswordHash(password, customer.getPassword())) {
                 MenuFactory.getMenu(customer).routerMenu();
                 break;
             } else {

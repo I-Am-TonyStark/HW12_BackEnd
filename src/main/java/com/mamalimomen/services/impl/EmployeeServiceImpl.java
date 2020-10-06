@@ -1,11 +1,15 @@
 package com.mamalimomen.services.impl;
 
 import com.mamalimomen.base.controllers.utilities.InValidDataException;
+import com.mamalimomen.base.controllers.utilities.SecurityManager;
 import com.mamalimomen.base.controllers.utilities.SingletonScanner;
 import com.mamalimomen.base.services.impl.BaseServiceImpl;
 import com.mamalimomen.controllers.utilities.AppManager;
 import com.mamalimomen.controllers.utilities.Services;
-import com.mamalimomen.domains.*;
+import com.mamalimomen.domains.Address;
+import com.mamalimomen.domains.BankBranch;
+import com.mamalimomen.domains.Employee;
+import com.mamalimomen.domains.Post;
 import com.mamalimomen.repositories.EmployeeRepository;
 import com.mamalimomen.repositories.impl.EmployeeRepositoryImpl;
 import com.mamalimomen.services.BankBranchService;
@@ -124,7 +128,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long, Employe
                 String oldPassword = SingletonScanner.readLine();
                 if (oldPassword.equalsIgnoreCase("esc")) {
                     break;
-                } else if (!oldPassword.equals(employee.getPassword())) {
+                } else if (!SecurityManager.checkPasswordHash(oldPassword, employee.getPassword())) {
                     System.out.println("Wrong Password!\n");
                     continue;
                 }

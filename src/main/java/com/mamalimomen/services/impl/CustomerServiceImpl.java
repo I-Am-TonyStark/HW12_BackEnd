@@ -1,6 +1,7 @@
 package com.mamalimomen.services.impl;
 
 import com.mamalimomen.base.controllers.utilities.InValidDataException;
+import com.mamalimomen.base.controllers.utilities.SecurityManager;
 import com.mamalimomen.base.controllers.utilities.SingletonScanner;
 import com.mamalimomen.base.services.impl.BaseServiceImpl;
 import com.mamalimomen.domains.Address;
@@ -56,7 +57,7 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer, Long, Custome
 
                 return Optional.of(customer);
             } catch (InValidDataException e) {
-                System.out.println("Wrong entered data format for " + e.getMessage() + "!");
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!\n");
             }
         }
         return Optional.empty();
@@ -90,7 +91,7 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer, Long, Custome
                 String oldPassword = SingletonScanner.readLine();
                 if (oldPassword.equalsIgnoreCase("esc")) {
                     break;
-                } else if (!oldPassword.equals(customer.getPassword())) {
+                } else if (!SecurityManager.checkPasswordHash(oldPassword, customer.getPassword())) {
                     System.out.println("Wrong Password!\n");
                     continue;
                 }

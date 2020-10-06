@@ -1,6 +1,7 @@
 package com.mamalimomen.domains;
 
 import com.mamalimomen.base.controllers.utilities.InValidDataException;
+import com.mamalimomen.base.controllers.utilities.SecurityManager;
 import com.mamalimomen.base.domains.BaseEntity;
 import org.hibernate.annotations.SelectBeforeUpdate;
 
@@ -24,7 +25,7 @@ public class CreditCard extends BaseEntity<Long> implements Comparable<CreditCar
     private static final long serialVersionUID = -1888484344606840488L;
 
     @Transient
-    private static long count = 0;
+    private static long count = 1;
 
     @Column(name = "first_password", nullable = false)
     private String firstPassword;
@@ -55,7 +56,7 @@ public class CreditCard extends BaseEntity<Long> implements Comparable<CreditCar
         if (!firstPassword.matches("\\d{4}")) {
             throw new InValidDataException("First password");
         }
-        this.firstPassword = firstPassword;
+        this.firstPassword = SecurityManager.getPasswordHash(firstPassword);
     }
 
     public String getSecondPassword() {
@@ -66,7 +67,8 @@ public class CreditCard extends BaseEntity<Long> implements Comparable<CreditCar
         if (!secondPassword.matches("\\d{4,}")) {
             throw new InValidDataException("Second password");
         }
-        this.secondPassword = secondPassword;
+
+        this.secondPassword = SecurityManager.getPasswordHash(secondPassword);
     }
 
     public String getCvv2() {
@@ -101,7 +103,7 @@ public class CreditCard extends BaseEntity<Long> implements Comparable<CreditCar
     }
 
     public void setCardNumber(String cardNumber) throws InValidDataException {
-        if (!firstPassword.matches("\\d{16}")) {
+        if (!cardNumber.matches("\\d{16}")) {
             throw new InValidDataException("Card number");
         }
         this.cardNumber = cardNumber;

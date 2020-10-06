@@ -6,9 +6,11 @@ public class CustomerMenu<U extends Customer> extends AbstractMenu<U> {
     public CustomerMenu(U customer) {
         super(customer.getFullName() + "'s menu", new String[]{
                 "Change your password",
-                "See and Modify your articles",
-                "Write new article",
-                "See your CreditCard"
+                "Change CreditCard First Password",
+                "Change CreditCard Second Password",
+                "See your Active Accounts",
+                "Card to Card Transaction",
+                "See your Transactions"
         }, customer);
     }
 

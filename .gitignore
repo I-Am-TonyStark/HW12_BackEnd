@@ -68,3 +68,4 @@
 /target/classes/com/mamalimomen/services/TransactionService.class
 /target/classes/com/mamalimomen/services/impl/TransactionServiceImpl.class
 /target/classes/com/mamalimomen/domains/User.class
+/target/classes/com/mamalimomen/base/controllers/utilities/SecurityManager.class

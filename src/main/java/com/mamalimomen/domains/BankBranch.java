@@ -29,7 +29,7 @@ public class BankBranch extends BaseEntity<Long> implements Comparable<BankBranc
     private static final long serialVersionUID = 2625817444781673072L;
 
     @Transient
-    private static long count = 0;
+    private static long count = 1;
 
     @Column(name = "branch_name", nullable = false, updatable = false, unique = true)
     private String branchName;
@@ -38,11 +38,11 @@ public class BankBranch extends BaseEntity<Long> implements Comparable<BankBranc
     @Column(name = "create_date", updatable = false, nullable = false)
     private Date createDate;
 
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_branch", foreignKey = @ForeignKey(name = "FK_BANK_BRANCH"))
     private Set<Account> accounts = new HashSet<>();
 
-    @OneToOne(optional = true, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToOne(optional = true, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_manager", nullable = true, unique = true)
     private Employee manager;
 

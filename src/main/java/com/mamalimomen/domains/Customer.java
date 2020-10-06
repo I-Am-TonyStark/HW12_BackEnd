@@ -23,7 +23,7 @@ public class Customer extends User {
     private static final long serialVersionUID = 9220704339022596600L;
 
     @Transient
-    private static long count = 0;
+    private static long count = 1;
 
     @OneToMany(mappedBy = "ownerCustomer", orphanRemoval = true)
     @OrderBy(value = "balance DESC")

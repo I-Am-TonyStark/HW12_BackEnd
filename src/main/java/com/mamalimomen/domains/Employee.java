@@ -30,17 +30,17 @@ public class Employee extends User {
     private static final long serialVersionUID = -7597451830919628484L;
 
     @Transient
-    private static long count = 0;
+    private static long count = 1;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "fk_branch", nullable = false)
     private BankBranch workOffice;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "fk_boss", nullable = false)
     private Employee boss;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "fk_post", nullable = false)
     private Post post;
 

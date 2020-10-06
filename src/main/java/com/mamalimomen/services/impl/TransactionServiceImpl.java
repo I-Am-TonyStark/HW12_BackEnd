@@ -69,12 +69,12 @@ public class TransactionServiceImpl extends BaseServiceImpl<Transaction, Long, T
             }
             try {
                 for (int i = 1; i <= accounts.size(); i++) {
-                    System.out.println(accounts.get(i - 1));
+                    System.out.printf("%d. %s%n", i, accounts.get(i - 1));
                 }
                 System.out.print("Which account? ");
                 Account account = accounts.get(SingletonScanner.readInteger() - 1);
 
-                System.out.println("Enter from date: ");
+                System.out.print("Enter from date (Year/Month): ");
                 String fromDate = SingletonScanner.readLine();
                 String[] tempArray = fromDate.split("/");
                 Date date = new Date(Integer.parseInt(tempArray[0]) - 1900, Integer.parseInt(tempArray[1]), 0);
@@ -89,17 +89,20 @@ public class TransactionServiceImpl extends BaseServiceImpl<Transaction, Long, T
                     return;
                 }
 
-                for (Transaction transaction : transactions) {
-                    System.out.println(transaction);
+                for (int i = 1; i <= transactions.size(); i++) {
+                    System.out.printf("%d. %s%n", i, transactions.get(i - 1));
+                    return;
                 }
-                break;
+            } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+                System.out.println("Wrong Date format, Please enter true Date format!\n");
             } catch (IndexOutOfBoundsException e) {
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Wrong format, Please enter an integer number!");
+                System.out.println("Wrong format, Please enter an integer number!\n");
                 SingletonScanner.clearBuffer();
             }
         }
+        System.out.println("You Cancelled this operation!");
     }
 
     @Override

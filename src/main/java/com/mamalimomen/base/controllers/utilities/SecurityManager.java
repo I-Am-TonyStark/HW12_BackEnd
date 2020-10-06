@@ -13,6 +13,6 @@ public final class SecurityManager {
     }
 
     public static synchronized boolean checkPasswordHash(String plainPassword, String hashedPassword) {
-        return SCryptUtil.check(plainPassword, hashedPassword);
+        return SCryptUtil.check(plainPassword.concat(pepper), hashedPassword);
     }
 }

@@ -23,7 +23,7 @@ public class Post extends BaseEntity<Long> implements Comparable<Post> {
     private static final long serialVersionUID = 4938129232368394591L;
 
     @Transient
-    private static long count = 0;
+    private static long count = 3;
 
     @Column(nullable = false, unique = true, updatable = false)
     private String title;

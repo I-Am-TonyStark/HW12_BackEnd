@@ -37,7 +37,7 @@ public class Account extends BaseEntity<Long> implements Comparable<Account> {
     private static final long serialVersionUID = 5216996780864192251L;
 
     @Transient
-    private static long count = 0;
+    private static long count = 1;
 
     @Column(name = "account_number", nullable = false, updatable = false, unique = true)
     private String accountNumber;
@@ -133,12 +133,12 @@ public class Account extends BaseEntity<Long> implements Comparable<Account> {
 
     @Override
     public String toString() {
-        return String.format("Account Number: %s%nBalance amount: %s%n", getAccountNumber(), getBalance());
+        return String.format("Account Number: %s%nOwner Customer: %s%nBalance amount: %,+011.2f Rials%n", getAccountNumber(), getOwnerCustomer().getFullName(), getBalance().doubleValue());
     }
 
     public void printCompleteInformation() {
-        System.out.printf("%nAccount Number: %s%nIs Active: %b%nBalance amount: %s%nOwner: %s%nOpen Date: %s%nCredit Card: %s%n%n",
-                getAccountNumber(), getActive(), getBalance(), getOwnerCustomer(), getOpenDate(), getActiveCard());
+        System.out.printf("Account Number: %s%nIs Active: %b%nBalance amount: %,+011.2f Rials%nOwner: %s%nOpen Date: %s%nCredit Card: %s%n",
+                getAccountNumber(), getActive(), getBalance().doubleValue(), getOwnerCustomer().getFullName(), getOpenDate(), getActiveCard().getCardNumber());
     }
 
     @Override

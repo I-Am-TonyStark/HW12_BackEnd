@@ -3,7 +3,9 @@ package com.mamalimomen.services.impl;
 import com.mamalimomen.base.controllers.utilities.InValidDataException;
 import com.mamalimomen.base.controllers.utilities.SingletonScanner;
 import com.mamalimomen.base.services.impl.BaseServiceImpl;
+import com.mamalimomen.domains.Account;
 import com.mamalimomen.domains.BankBranch;
+import com.mamalimomen.domains.Employee;
 import com.mamalimomen.repositories.BankBranchRepository;
 import com.mamalimomen.repositories.impl.BankBranchRepositoryImpl;
 import com.mamalimomen.services.BankBranchService;
@@ -36,6 +38,15 @@ public class BankBranchServiceImpl extends BaseServiceImpl<BankBranch, Long, Ban
                 System.out.println("Wrong entered data format for " + e.getMessage() + "!\n");
             }
         }
+    }
+
+    @Override
+    public String updateBankBranchAccounts(Employee employee, Account account) {
+        BankBranch bankBranch = employee.getWorkOffice();
+        bankBranch.addAccount(account);
+        if (baseRepository.updateOne(bankBranch)) {
+            return "BankBranch's Accounts was update successfully!";
+        } else return "There is a problem when update BankBranch's Accounts in database";
     }
 
     @Override

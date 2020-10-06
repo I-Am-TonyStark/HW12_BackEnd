@@ -1,6 +1,7 @@
 package com.mamalimomen.services.impl;
 
 import com.mamalimomen.base.controllers.utilities.InValidDataException;
+import com.mamalimomen.base.controllers.utilities.SecurityManager;
 import com.mamalimomen.base.controllers.utilities.SingletonScanner;
 import com.mamalimomen.base.services.impl.BaseServiceImpl;
 import com.mamalimomen.controllers.utilities.AppManager;
@@ -37,29 +38,29 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
         CreditCard creditCard = new CreditCard();
         while (true) {
             try {
-                System.out.print("Card Number: ");
+                System.out.print("Card Number (16 Digit): ");
                 String cardNumber = SingletonScanner.readLine();
                 if (cardNumber.equalsIgnoreCase("esc")) {
                     break;
                 }
                 creditCard.setCardNumber(cardNumber);
                 if (baseRepository.findOneCreditCardByNumber(cardNumber).isPresent()) {
-                    System.out.println("This Card Number has taken already!");
+                    System.out.println("This Card Number has taken already!\n");
                     continue;
                 }
 
-                System.out.print("First Password: ");
+                System.out.print("First Password (4 Digit): ");
                 creditCard.setFirstPassword(SingletonScanner.readLine());
 
-                System.out.print("CVV2: ");
+                System.out.print("CVV2 (4 Digit): ");
                 creditCard.setCvv2(SingletonScanner.readLine());
 
-                System.out.print("Expire date: ");
+                System.out.print("Expire date (Year/Month): ");
                 creditCard.setExpireDateString(SingletonScanner.readLine());
 
                 return Optional.of(creditCard);
             } catch (InValidDataException e) {
-                System.out.println("Wrong entered data format for " + e.getMessage() + "!");
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!\n");
             }
         }
         return Optional.empty();
@@ -75,7 +76,7 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
                 creditCard.setCardNumber(cardNumber);
                 return baseRepository.findOneCreditCardByNumber(cardNumber);
             } catch (InValidDataException e) {
-                System.out.println("Wrong entered data format for " + e.getMessage() + "!");
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!\n");
             }
         }
     }
@@ -115,7 +116,7 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
             }
             try {
                 for (int i = 1; i <= accounts.size(); i++) {
-                    System.out.println(accounts.get(i - 1));
+                    System.out.printf("%d. %s%n", i, accounts.get(i - 1));
                 }
                 System.out.print("Which account? ");
                 Account account = accounts.get(SingletonScanner.readInteger() - 1);
@@ -125,8 +126,8 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
                 String oldPassword = SingletonScanner.readLine();
                 if (oldPassword.equalsIgnoreCase("esc")) {
                     break;
-                } else if (!oldPassword.equals(creditCard.getFirstPassword())) {
-                    System.out.println("Wrong Password!");
+                } else if (!SecurityManager.checkPasswordHash(oldPassword,creditCard.getFirstPassword())) {
+                    System.out.println("Wrong Password!\n");
                     continue;
                 }
                 System.out.print("New Password: ");
@@ -142,11 +143,11 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
                     return "There is a problem, We can not update your first password!";
                 }
             } catch (InValidDataException e) {
-                System.out.println("Wrong entered data format for " + e.getMessage() + "!");
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!\n");
             } catch (IndexOutOfBoundsException e) {
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Wrong format, Please enter an integer number!");
+                System.out.println("Wrong format, Please enter an integer number!\n");
                 SingletonScanner.clearBuffer();
             }
         }
@@ -186,7 +187,7 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
             }
             try {
                 for (int i = 1; i <= accounts.size(); i++) {
-                    System.out.println(accounts.get(i - 1));
+                    System.out.printf("%d. %s%n", i, accounts.get(i - 1));
                 }
                 System.out.print("Which account? ");
                 Account account = accounts.get(SingletonScanner.readInteger() - 1);
@@ -200,8 +201,8 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
                 String oldPassword = SingletonScanner.readLine();
                 if (oldPassword.equalsIgnoreCase("esc")) {
                     break;
-                } else if (!oldPassword.equals(creditCard.getSecondPassword())) {
-                    System.out.println("Wrong Password!");
+                } else if (!SecurityManager.checkPasswordHash(oldPassword,creditCard.getSecondPassword())) {
+                    System.out.println("Wrong Password!\n");
                     continue;
                 }
                 System.out.print("New Password: ");
@@ -217,11 +218,11 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
                     return "There is a problem, We can not update your second password!";
                 }
             } catch (InValidDataException e) {
-                System.out.println("Wrong entered data format for " + e.getMessage() + "!");
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!\n");
             } catch (IndexOutOfBoundsException e) {
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Wrong format, Please enter an integer number!");
+                System.out.println("Wrong format, Please enter an integer number!\n");
                 SingletonScanner.clearBuffer();
             }
         }
@@ -238,20 +239,30 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
             }
             try {
                 for (int i = 1; i <= accounts.size(); i++) {
-                    System.out.println(accounts.get(i - 1));
+                    System.out.printf("%d. %s%n", i, accounts.get(i - 1));
                 }
                 System.out.print("Which account? ");
                 Account account = accounts.get(SingletonScanner.readInteger() - 1);
 
                 CreditCard originCreditCard = account.getActiveCard();
+                if (originCreditCard.getSecondPassword() == null) {
+                    System.out.println("This CreditCard does not have second password!\n");
+                    continue;
+                }
                 System.out.printf("%s %s%n", "Your origin card number is", originCreditCard.getCardNumber());
 
                 System.out.print("Enter Destination ");
                 Optional<CreditCard> oCreditCard = retrieveCreditCard();
                 if (oCreditCard.isEmpty()) {
-                    return "There is not any Credit Card with this number";
+                    System.out.println("There is not any Credit Card with this number\n");
+                    continue;
                 }
                 CreditCard destinationCreditCard = oCreditCard.get();
+
+                if (destinationCreditCard.getCardNumber().equals(originCreditCard.getCardNumber())) {
+                    System.out.println("You can not do money transition to same card!\n");
+                    continue;
+                }
 
                 Transaction transaction = new Transaction();
                 System.out.print("Enter transition money amount: ");
@@ -263,39 +274,44 @@ public class CreditCardServiceImpl extends BaseServiceImpl<CreditCard, Long, Cre
                 transaction.setSucceed(true);
 
                 while (tries < 3) {
-                    System.out.print("Enter origin card second password: ");
-                    String originCardSecondPassword = SingletonScanner.readLine();
+                    try {
+                        System.out.print("Enter origin card second password: ");
+                        String originCardSecondPassword = SingletonScanner.readLine();
 
-                    System.out.print("Enter origin card cvv2: ");
-                    String originCardCvv2 = SingletonScanner.readLine();
+                        System.out.print("Enter origin card cvv2: ");
+                        String originCardCvv2 = SingletonScanner.readLine();
 
-                    System.out.print("Enter origin card expire date: ");
-                    String originExpireDate = SingletonScanner.readLine();
-                    String[] tempArray = originExpireDate.split("/");
-                    Date date = new Date(Integer.parseInt(tempArray[0]) - 1900, Integer.parseInt(tempArray[1]), 0);
+                        System.out.print("Enter origin card expire date (Year/Month): ");
+                        String originExpireDate = SingletonScanner.readLine();
+                        String[] tempArray = originExpireDate.split("/");
+                        Date date = new Date(Integer.parseInt(tempArray[0]) - 1900, Integer.parseInt(tempArray[1]), 0);
 
-                    if (originCardSecondPassword.equals(originCreditCard.getSecondPassword())
-                            && originCardCvv2.equals(originCreditCard.getCvv2())
-                            && date.equals(originCreditCard.getExpireDate())) {
+                        if (SecurityManager.checkPasswordHash(originCardSecondPassword,originCreditCard.getSecondPassword())
+                                && originCardCvv2.equals(originCreditCard.getCvv2())
+                                && date.equals(originCreditCard.getExpireDate())) {
 
-                        if (accountService.updateAccountBalanceAuto(transaction)) {
-                            return "Your transaction done successfully!\nTransaction ID: " + transaction.getId();
-                        } else if (transaction.getSucceed()) {
-                            return "You have not enough money for this transaction";
+                            if (accountService.updateAccountBalanceAuto(transaction)) {
+                                return "Your transaction done successfully!\nTransaction ID: " + transaction.getId();
+                            } else if (!transaction.getSucceed()) {
+                                return "You have not enough money for this transaction";
+                            }
+                            return "There is a database Error for this transaction";
                         }
-                        return "There is a database Error for this transaction";
+                        tries++;
+                        System.out.println("Wrong origin card data!\n\nAllowed tries: " + (3 - tries));
+                    } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+                        System.out.println("Wrong Date format, Please enter true Date format!\n\nAllowed tries: " + (3 - tries));
                     }
-                    tries++;
                 }
                 account.setActive(false);
                 accountService.updateOne(account);
                 return "Your allowed tries was ended!\nWe have to block your account for security reasons.";
             } catch (InValidDataException e) {
-                System.out.println("Wrong entered data format for " + e.getMessage() + "!");
+                System.out.println("Wrong entered data format for " + e.getMessage() + "!\n");
             } catch (IndexOutOfBoundsException e) {
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Wrong format, Please enter an integer number!");
+                System.out.println("Wrong format, Please enter an integer number!\n");
                 SingletonScanner.clearBuffer();
             }
         }

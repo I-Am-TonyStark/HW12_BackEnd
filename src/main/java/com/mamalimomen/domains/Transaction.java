@@ -31,7 +31,7 @@ public class Transaction extends BaseEntity<Long> implements Comparable<Transact
     private static final long serialVersionUID = 6120959356340565984L;
 
     @Transient
-    private static long count = 0;
+    private static long count = 1;
 
     @Column(name = "is_succeed", nullable = false, updatable = false)
     private Boolean succeed;
@@ -123,13 +123,24 @@ public class Transaction extends BaseEntity<Long> implements Comparable<Transact
         this.date = date;
     }
 
+    public void cloneMeTo(Transaction inverseTransaction, Account inverseAccount) {
+        inverseTransaction.setDate(this.getDate());
+        inverseTransaction.setSucceed(this.getSucceed());
+        inverseTransaction.setAccount(inverseAccount);
+        inverseTransaction.settCost(this.getTCost());
+        inverseTransaction.setDestinationCardNumber(this.getDestinationCardNumber());
+        inverseTransaction.setOriginCardNumber(this.getOriginCardNumber());
+        inverseTransaction.setMoneyAmount(this.getMoneyAmount());
+    }
+
     @Override
     public int compareTo(Transaction o) {
         return this.getDate().compareTo(o.getDate());
     }
 
-    //TODO repository, service & crud services
-    //سرویس دیدن تراکنش های ثبت شده در سیستم برای هر اکانت
-    //سرویس مشاهده تراکنش های هر اکانت بعد از تاریخ مشخص شده تا تاریخ جاری
-    //با گرفتن شناسه اکانت و تاریخ، تراکنش هارا بر اساس این دو فیلد و تاریخ جاری فیلر کرده و لیستی از رکوردها را بر میگرداند
+    @Override
+    public String toString() {
+        return String.format("Origin Account Number: %s%nOrigin Card Number: %s%nDestination Card Number: %s%nDate: %s%nIs Succeed: %b%nMoney amount: %,+011.2f Rials%nCost amount: %,+07.2f Rials%n",
+                getAccount().getAccountNumber(), getOriginCardNumber(), getDestinationCardNumber(), getDate(), getSucceed(), getMoneyAmount().doubleValue(), getTCost().doubleValue());
+    }
 }
