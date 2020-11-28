@@ -3,6 +3,8 @@ package com.mamalimomen.domains;
 import org.hibernate.annotations.SelectBeforeUpdate;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @SelectBeforeUpdate
@@ -39,6 +41,10 @@ public class Employee extends User {
     @ManyToOne(optional = false)
     @JoinColumn(name = "fk_boss", nullable = false)
     private Employee boss;
+
+    @OneToMany
+    @JoinColumn(name = "fk_boss")
+    private Set<Employee> childrenEmployee = new HashSet<>();
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "fk_post", nullable = false)

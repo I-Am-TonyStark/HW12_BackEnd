@@ -76,7 +76,7 @@ public class CreditCard extends BaseEntity<Long> implements Comparable<CreditCar
     }
 
     public void setCvv2(String cvv2) throws InValidDataException {
-        if (!firstPassword.matches("\\d{4}")) {
+        if (!cvv2.matches("\\d{4}")) {
             throw new InValidDataException("CVV2");
         }
         this.cvv2 = cvv2;

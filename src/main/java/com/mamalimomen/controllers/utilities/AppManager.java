@@ -28,8 +28,8 @@ public final class AppManager {
         MenuFactory.getMenu(null).routerMenu();
     }
 
-    public static synchronized BaseService getService(Services service) {
-        return serviceMapper.get(service);
+    public static synchronized <S extends BaseService> S getService(Services service) {
+        return (S) serviceMapper.get(service);
     }
 
     public static synchronized void endApp() {
